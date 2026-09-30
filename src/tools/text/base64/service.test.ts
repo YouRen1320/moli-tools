@@ -3,7 +3,7 @@ import { decodeBase64, encodeBase64, looksLikeBase64 } from './service';
 
 describe('encodeBase64 / decodeBase64', () => {
   it('往返一致', () => {
-    const samples = ['hello', '茉莉工具箱', 'emoji 🧰🎉', 'line\nbreak\ttab'];
+    const samples = ['hello', 'YouRen工具箱', 'emoji 🧰🎉', 'line\nbreak\ttab'];
     for (const sample of samples) {
       expect(decodeBase64(encodeBase64(sample))).toBe(sample);
     }

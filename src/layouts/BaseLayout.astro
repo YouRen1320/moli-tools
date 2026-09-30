@@ -1,12 +1,14 @@
 ---
 import '../styles/global.css';
+import SkyScene from '../components/SkyScene.astro';
+import StarIcon from '../components/StarIcon.astro';
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const siteName = '茉莉工具箱';
+const siteName = 'YouRen工具箱';
 const repoUrl = 'https://github.com/YouRen1320/moli-tools';
 const { title, description = '所有工具均在浏览器本地运行，文件不上传服务器。' } = Astro.props;
 ---
@@ -22,21 +24,23 @@ const { title, description = '所有工具均在浏览器本地运行，文件�
     <title>{title} · {siteName}</title>
   </head>
   <body class="flex min-h-full flex-col font-sans">
-    <header class="border-b border-neutral-200 bg-white">
+    <SkyScene />
+    <header class="sticky top-0 z-10 border-b border-white/30 bg-white/40 backdrop-blur-md">
       <div class="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-4">
-        <a href="/" class="flex items-center gap-2 font-bold">
-          <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-brand-600 text-sm text-white">
-            茉
+        <a href="/" class="flex items-center gap-2 font-bold text-neutral-800">
+          <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-dusk-coral to-dusk-violet text-white shadow-[0_4px_12px_rgba(244,104,167,0.4)]">
+            <StarIcon class="h-4 w-4" />
           </span>
           <span>{siteName}</span>
         </a>
         <nav class="flex items-center gap-4 text-sm text-neutral-600">
-          <a href="/" class="transition hover:text-brand-600">
-            工具
+          <a href="/" class="transition hover:text-dusk-violet">
+            {' '}
+            工具{' '}
           </a>
           <a
             href={repoUrl}
-            class="transition hover:text-brand-600"
+            class="transition hover:text-dusk-violet"
             target="_blank"
             rel="noopener noreferrer"
           >
@@ -45,14 +49,15 @@ const { title, description = '所有工具均在浏览器本地运行，文件�
         </nav>
       </div>
     </header>
-    <main class="mx-auto w-full max-w-5xl flex-1 px-4 py-8">
+    <main class="mx-auto w-full max-w-5xl flex-1 px-4 py-10">
       <slot />
     </main>
-    <footer class="border-t border-neutral-200 bg-white">
-      <div class="mx-auto w-full max-w-5xl px-4 py-4 text-center text-xs text-neutral-500">
+    <footer class="border-t border-white/25 bg-white/35 backdrop-blur-md">
+      <div class="mx-auto w-full max-w-5xl px-4 py-4 text-center text-xs text-neutral-600">
         所有处理均在你自己的浏览器内完成，文件不会上传到任何服务器 · MIT License ·
-        <a class="transition hover:text-brand-600" href={repoUrl}>
-          YouRen1320/moli-tools
+        <a class="transition hover:text-dusk-violet" href={repoUrl}>
+          {' '}
+          YouRen1320/moli-tools{' '}
         </a>
       </div>
     </footer>

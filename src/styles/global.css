@@ -3,39 +3,58 @@
 @theme {
   --font-sans:
     system-ui, -apple-system, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', sans-serif;
-  --color-brand-50: #eef2ff;
-  --color-brand-100: #e0e7ff;
-  --color-brand-500: #6366f1;
-  --color-brand-600: #4f46e5;
-  --color-brand-700: #4338ca;
+  /* 黄昏色板：珊瑚橙 → 樱粉 → 暮紫 → 夜蓝（原创调色，致敬新海诚式的天光） */
+  --color-dusk-coral: #ff8a5c;
+  --color-dusk-rose: #f468a7;
+  --color-dusk-violet: #8a63e8;
+  --color-night-800: #23235f;
+  --color-night-900: #171738;
 }
 
 @layer base {
   body {
-    @apply bg-neutral-50 text-neutral-900 antialiased;
+    @apply text-neutral-800 antialiased;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-1 rounded-lg bg-brand-600 px-4 py-2 text-sm font-medium text-white transition hover:bg-brand-700 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-1 rounded-full bg-gradient-to-r from-dusk-coral to-dusk-violet px-5 py-2 text-sm font-medium text-white shadow-[0_8px_24px_rgba(138,99,232,0.35)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-1 rounded-lg border border-neutral-300 bg-white px-4 py-2 text-sm font-medium text-neutral-700 transition hover:border-neutral-400 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-1 rounded-full border border-white/60 bg-white/60 px-5 py-2 text-sm font-medium text-neutral-700 backdrop-blur transition hover:bg-white/85 disabled:cursor-not-allowed disabled:opacity-50;
   }
   .card {
-    @apply rounded-xl border border-neutral-200 bg-white p-4;
+    @apply rounded-2xl border border-white/50 bg-white/60 p-4 shadow-[0_8px_32px_rgba(90,60,140,0.12)] backdrop-blur-md transition;
+  }
+  .card-hoverable {
+    @apply hover:-translate-y-0.5 hover:border-white/80 hover:bg-white/80 hover:shadow-[0_14px_40px_rgba(90,60,140,0.18)];
+  }
+  .glass-panel {
+    @apply rounded-2xl border border-white/50 bg-white/65 p-6 shadow-[0_8px_32px_rgba(90,60,140,0.12)] backdrop-blur-md;
   }
   .text-input {
-    @apply w-full rounded-lg border border-neutral-300 bg-white p-3 font-mono text-sm outline-none transition focus:border-brand-500 focus:ring-2 focus:ring-brand-100;
+    @apply w-full rounded-xl border border-white/60 bg-white/70 p-3 font-mono text-sm text-neutral-800 outline-none transition placeholder:text-neutral-400 focus:border-dusk-violet/60 focus:ring-2 focus:ring-dusk-violet/20;
   }
   .error-text {
-    @apply text-sm text-red-600;
+    @apply text-sm text-rose-700;
   }
   .dropzone {
-    @apply flex cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border-2 border-dashed border-neutral-300 bg-white p-8 text-center transition hover:border-brand-500 hover:bg-brand-50;
+    @apply flex cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl border-2 border-dashed border-white/70 bg-white/40 p-8 text-center transition hover:border-dusk-violet/70 hover:bg-white/60;
   }
   .dropzone-active {
-    @apply border-brand-500 bg-brand-50;
+    @apply border-dusk-violet/80 bg-white/70;
+  }
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full border border-white/50 bg-white/25 px-3 py-1 text-xs text-white backdrop-blur;
+  }
+  /* 白字直接压在天空上时的柔光描影 */
+  .hero-title {
+    text-shadow:
+      0 2px 6px rgba(60, 30, 90, 0.35),
+      0 10px 44px rgba(255, 138, 92, 0.5);
+  }
+  .hero-sub {
+    text-shadow: 0 1px 12px rgba(60, 30, 90, 0.45);
   }
 }

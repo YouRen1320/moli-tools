@@ -1,0 +1,11 @@
+---
+/** 四角星标识，全站品牌符号 */
+interface Props {
+  class?: string;
+}
+const { class: className = 'h-4 w-4' } = Astro.props;
+---
+
+<svg viewBox="0 0 24 24" class={className} fill="currentColor" aria-hidden="true">
+  <path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4L12 2z" />
+</svg>

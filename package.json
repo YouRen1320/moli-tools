@@ -2,7 +2,7 @@
   "name": "moli-tools",
   "packageManager": "pnpm@11.25.0",
   "version": "0.1.0",
-  "description": "茉莉工具箱 —— 纯浏览器本地处理的中文在线工具箱",
+  "description": "YouRen工具箱 —— 新海诚风二次元界面、纯浏览器本地处理的中文在线工具箱",
   "private": true,
   "type": "module",
   "scripts": {
