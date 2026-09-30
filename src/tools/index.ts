@@ -1,0 +1,37 @@
+import { toolCategories, type ToolCategory, type ToolMeta } from './types';
+import { tool as mergePdf } from './pdf/merge-pdf/meta';
+import { tool as extractPages } from './pdf/extract-pages/meta';
+import { tool as imageCompress } from './image/compress/meta';
+import { tool as base64 } from './text/base64/meta';
+import { tool as jsonFormat } from './text/json-format/meta';
+import { tool as timestamp } from './time/timestamp/meta';
+import { tool as qrcode } from './generate/qrcode/meta';
+
+export const allTools: ToolMeta[] = [
+  mergePdf,
+  extractPages,
+  imageCompress,
+  base64,
+  jsonFormat,
+  timestamp,
+  qrcode,
+];
+
+const seenSlugs = new Set<string>();
+for (const tool of allTools) {
+  if (seenSlugs.has(tool.slug)) {
+    throw new Error(`工具 slug 重复：${tool.slug}`);
+  }
+  seenSlugs.add(tool.slug);
+}
+
+export function getTool(slug: string): ToolMeta | undefined {
+  return allTools.find((tool) => tool.slug === slug);
+}
+
+export function getToolsByCategory(category: ToolCategory): ToolMeta[] {
+  return allTools.filter((tool) => tool.category === category);
+}
+
+export { toolCategories };
+export type { ToolCategory, ToolMeta } from './types';

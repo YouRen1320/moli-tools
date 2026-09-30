@@ -1,0 +1,20 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ToolHost from '../../components/ToolHost';
+import { allTools } from '@tools';
+
+export function getStaticPaths() {
+  return allTools.map((tool) => ({
+    params: { slug: tool.slug },
+    props: { tool },
+  }));
+}
+
+const { tool } = Astro.props;
+---
+
+<BaseLayout title={tool.title} description={tool.description}>
+  <div class="mx-auto max-w-3xl">
+    <ToolHost client:load slug={tool.slug} />
+  </div>
+</BaseLayout>
