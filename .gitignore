@@ -1,0 +1,19 @@
+# 依赖与构建产物
+node_modules/
+dist/
+.astro/
+
+# 测试与覆盖率
+coverage/
+
+# 环境变量（真实密钥只放 .env，绝不提交）
+.env
+.env.local
+.env.*.local
+
+# 编辑器与系统文件
+.DS_Store
+*.log
+.idea/
+.vscode/*
+!.vscode/extensions.json
