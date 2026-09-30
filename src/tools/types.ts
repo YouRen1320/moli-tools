@@ -6,6 +6,7 @@ export const toolCategories = {
   text: '文本工具',
   time: '时间工具',
   generate: '生成工具',
+  design: '设计工具',
 } as const;
 
 export type ToolCategory = keyof typeof toolCategories;

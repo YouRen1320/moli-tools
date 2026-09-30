@@ -1,10 +1,10 @@
-# YouRen工具箱（moli-tools）
+# YouRen工具箱（youren-tools）
 
 小而快的中文在线工具箱。**所有处理都在你自己的浏览器里完成，文件不上传服务器** —— 断网也能用。
 
 ## 已实现 / 未实现
 
-### ✅ 已实现（v0.1.0）
+### ✅ 已实现（v0.2.0）
 
 | 工具          | 说明                                           |
 | ------------- | ---------------------------------------------- |
@@ -30,8 +30,8 @@
 要求：Node.js ≥ 22、pnpm ≥ 11（`corepack enable` 或 `npm i -g pnpm`）。
 
 ```bash
-git clone https://github.com/YouRen1320/moli-tools.git
-cd moli-tools
+git clone https://github.com/YouRen1320/youren-tools.git
+cd youren-tools
 pnpm install
 pnpm dev        # 开发服务器 http://localhost:4321
 ```
@@ -50,7 +50,7 @@ pnpm preview     # 本地预览构建产物
 ## 目录结构
 
 ```
-moli-tools/
+youren-tools/
 ├── .github/workflows/ci.yml   # CI：安装 → lint → 格式 → 类型 → 测试 → 构建
 ├── public/                    # 静态资源（favicon 等）
 ├── src/
