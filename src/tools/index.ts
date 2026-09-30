@@ -9,10 +9,13 @@ import { tool as urlCodec } from './text/url-codec/meta';
 import { tool as timestamp } from './time/timestamp/meta';
 import { tool as qrcode } from './generate/qrcode/meta';
 import { tool as colorConvert } from './design/color-convert/meta';
+import { tool as hashCalc } from './dev/hash-calc/meta';
+import { tool as pdfToImage } from './pdf/pdf-to-image/meta';
 
 export const allTools: ToolMeta[] = [
   mergePdf,
   extractPages,
+  pdfToImage,
   imageCompress,
   base64,
   jsonFormat,
@@ -21,6 +24,7 @@ export const allTools: ToolMeta[] = [
   timestamp,
   qrcode,
   colorConvert,
+  hashCalc,
 ];
 
 const seenSlugs = new Set<string>();
