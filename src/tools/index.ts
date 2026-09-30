@@ -4,8 +4,11 @@ import { tool as extractPages } from './pdf/extract-pages/meta';
 import { tool as imageCompress } from './image/compress/meta';
 import { tool as base64 } from './text/base64/meta';
 import { tool as jsonFormat } from './text/json-format/meta';
+import { tool as wordCount } from './text/word-count/meta';
+import { tool as urlCodec } from './text/url-codec/meta';
 import { tool as timestamp } from './time/timestamp/meta';
 import { tool as qrcode } from './generate/qrcode/meta';
+import { tool as colorConvert } from './design/color-convert/meta';
 
 export const allTools: ToolMeta[] = [
   mergePdf,
@@ -13,8 +16,11 @@ export const allTools: ToolMeta[] = [
   imageCompress,
   base64,
   jsonFormat,
+  wordCount,
+  urlCodec,
   timestamp,
   qrcode,
+  colorConvert,
 ];
 
 const seenSlugs = new Set<string>();
