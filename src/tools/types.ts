@@ -8,6 +8,7 @@ export const toolCategories = {
   generate: '生成工具',
   design: '设计工具',
   dev: '开发工具',
+  convert: '换算工具',
 } as const;
 
 export type ToolCategory = keyof typeof toolCategories;

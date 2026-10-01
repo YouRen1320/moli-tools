@@ -8,6 +8,8 @@ import { tool as wordCount } from './text/word-count/meta';
 import { tool as urlCodec } from './text/url-codec/meta';
 import { tool as markdownPreview } from './text/markdown-preview/meta';
 import { tool as textDiff } from './text/text-diff/meta';
+import { tool as textClean } from './text/text-clean/meta';
+import { tool as unitConverter } from './convert/unit-converter/meta';
 import { tool as timestamp } from './time/timestamp/meta';
 import { tool as qrcode } from './generate/qrcode/meta';
 import { tool as colorConvert } from './design/color-convert/meta';
@@ -27,12 +29,14 @@ export const allTools: ToolMeta[] = [
   urlCodec,
   markdownPreview,
   textDiff,
+  textClean,
   timestamp,
   qrcode,
   colorConvert,
   hashCalc,
   passwordGenerator,
   uuidGenerator,
+  unitConverter,
 ];
 
 const seenSlugs = new Set<string>();
