@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { allTools, getTool, getToolsByCategory, toolCategories } from './index';
 
 describe('工具注册表', () => {
-  it('注册了 14 个工具', () => {
-    expect(allTools).toHaveLength(14);
+  it('注册了 16 个工具', () => {
+    expect(allTools).toHaveLength(16);
   });
 
   it('slug 全局唯一且格式合法', () => {
