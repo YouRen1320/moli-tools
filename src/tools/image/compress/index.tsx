@@ -74,7 +74,7 @@ export default function ImageCompress() {
             <input
               id="quality-range"
               type="range"
-              className="mt-1 w-full accent-brand-600"
+              className="mt-1 w-full accent-dusk-violet"
               min={0.1}
               max={0.95}
               step={0.05}
@@ -111,7 +111,7 @@ export default function ImageCompress() {
                   <td className="max-w-48 truncate py-2">{result.name}</td>
                   <td className="py-2 text-neutral-500">{formatBytes(result.before)}</td>
                   <td className="py-2">{formatBytes(result.after)}</td>
-                  <td className="py-2 text-brand-700">
+                  <td className="py-2 text-dusk-violet">
                     {savedPercent(result.before, result.after)}%
                   </td>
                   <td className="py-2 text-right">

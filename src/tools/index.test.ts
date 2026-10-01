@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { allTools, getTool, getToolsByCategory, toolCategories } from './index';
 
 describe('工具注册表', () => {
-  it('注册了 12 个工具', () => {
-    expect(allTools).toHaveLength(12);
+  it('注册了 14 个工具', () => {
+    expect(allTools).toHaveLength(14);
   });
 
   it('slug 全局唯一且格式合法', () => {
@@ -32,6 +32,10 @@ describe('工具注册表', () => {
       'pdf-extract-pages',
       'pdf-to-image',
     ]);
-    expect(getToolsByCategory('dev').map((tool) => tool.slug)).toEqual(['hash-calc']);
+    expect(getToolsByCategory('dev').map((tool) => tool.slug)).toEqual([
+      'hash-calc',
+      'password-generator',
+      'uuid-generator',
+    ]);
   });
 });
