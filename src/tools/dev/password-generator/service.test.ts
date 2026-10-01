@@ -1,5 +1,15 @@
 import { describe, expect, it } from 'vitest';
-import { entropyBits, generatePassword, strengthLabel, LIMITS } from './service';
+import {
+  clearHistory,
+  entropyBits,
+  generatePassword,
+  HISTORY_KEY,
+  loadHistory,
+  saveToHistory,
+  strengthLabel,
+  LIMITS,
+  type HistoryEntry,
+} from './service';
 
 describe('generatePassword', () => {
   it('长度符合设置且只含启用的字符集', () => {
@@ -67,5 +77,48 @@ describe('entropyBits / strengthLabel', () => {
     expect(strengthLabel(52).label).toBe('一般');
     expect(strengthLabel(70).label).toBe('良好');
     expect(strengthLabel(120).label).toBe('很强');
+  });
+});
+
+describe('生成历史（localStorage）', () => {
+  it('保存后可读取，且新密码排最前', () => {
+    const a = generatePassword({ length: 16, uppercase: true, digits: true, symbols: true });
+    const list = saveToHistory(a, { length: 16, uppercase: true, digits: true, symbols: true });
+    expect(list[0].password).toBe(a);
+    expect(loadHistory()[0].password).toBe(a);
+  });
+
+  it('相同密码去重并移到最前', () => {
+    const options = { length: 16, uppercase: false, digits: false, symbols: false };
+    const pw = generatePassword(options);
+    saveToHistory(pw, options);
+    const newer = generatePassword(options);
+    saveToHistory(newer, options);
+    const again = saveToHistory(pw, options);
+    expect(again[0].password).toBe(pw);
+    expect(again.filter((entry) => entry.password === pw)).toHaveLength(1);
+  });
+
+  it('历史上限 10 条', () => {
+    const options = { length: LIMITS.maxLength, uppercase: false, digits: false, symbols: false };
+    let list: HistoryEntry[] = [];
+    for (let i = 0; i < 12; i += 1) {
+      list = saveToHistory(generatePassword(options), options, list);
+    }
+    expect(list).toHaveLength(10);
+  });
+
+  it('清空后为空', () => {
+    const options = { length: LIMITS.minLength, uppercase: false, digits: false, symbols: false };
+    saveToHistory(generatePassword(options), options);
+    clearHistory();
+    expect(loadHistory()).toEqual([]);
+  });
+
+  it('损坏的历史数据静默为空', () => {
+    localStorage.setItem(HISTORY_KEY, '{bad json');
+    expect(loadHistory()).toEqual([]);
+    localStorage.setItem(HISTORY_KEY, '["不是历史对象"]');
+    expect(loadHistory()).toEqual([]);
   });
 });
