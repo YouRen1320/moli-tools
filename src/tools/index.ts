@@ -6,6 +6,8 @@ import { tool as base64 } from './text/base64/meta';
 import { tool as jsonFormat } from './text/json-format/meta';
 import { tool as wordCount } from './text/word-count/meta';
 import { tool as urlCodec } from './text/url-codec/meta';
+import { tool as markdownPreview } from './text/markdown-preview/meta';
+import { tool as textDiff } from './text/text-diff/meta';
 import { tool as timestamp } from './time/timestamp/meta';
 import { tool as qrcode } from './generate/qrcode/meta';
 import { tool as colorConvert } from './design/color-convert/meta';
@@ -23,6 +25,8 @@ export const allTools: ToolMeta[] = [
   jsonFormat,
   wordCount,
   urlCodec,
+  markdownPreview,
+  textDiff,
   timestamp,
   qrcode,
   colorConvert,
