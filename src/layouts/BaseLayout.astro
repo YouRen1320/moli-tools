@@ -10,6 +10,7 @@ interface Props {
 
 const siteName = 'YouRen工具箱';
 const repoUrl = 'https://github.com/YouRen1320/youren-tools';
+const base = import.meta.env.BASE_URL;
 const { title, description = '所有工具均在浏览器本地运行，文件不上传服务器。' } = Astro.props;
 ---
 
@@ -20,21 +21,23 @@ const { title, description = '所有工具均在浏览器本地运行，文件�
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="theme-color" content="#6d5ae0" />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <link rel="manifest" href={`${base}/manifest.webmanifest`} />
     <title>{title} · {siteName}</title>
   </head>
   <body class="flex min-h-full flex-col font-sans">
     <SkyScene />
     <header class="sticky top-0 z-10 border-b border-white/30 bg-white/40 backdrop-blur-md">
       <div class="mx-auto flex h-14 w-full max-w-5xl items-center justify-between px-4">
-        <a href="/" class="flex items-center gap-2 font-bold text-neutral-800">
+        <a href={`${base}/`} class="flex items-center gap-2 font-bold text-neutral-800">
           <span class="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-dusk-coral to-dusk-violet text-white shadow-[0_4px_12px_rgba(244,104,167,0.4)]">
             <StarIcon class="h-4 w-4" />
           </span>
           <span>{siteName}</span>
         </a>
         <nav class="flex items-center gap-4 text-sm text-neutral-600">
-          <a href="/" class="transition hover:text-dusk-violet">
+          <a href={`${base}/`} class="transition hover:text-dusk-violet">
             {' '}
             工具{' '}
           </a>
@@ -61,5 +64,14 @@ const { title, description = '所有工具均在浏览器本地运行，文件�
         </a>
       </div>
     </footer>
+    <script is:inline define:vars={{ swUrl: `${base}/sw.js` }}>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register(swUrl).catch(() => {
+            // 注册失败不影响正常使用（如非 HTTPS 环境）
+          });
+        });
+      }
+    </script>
   </body>
 </html>

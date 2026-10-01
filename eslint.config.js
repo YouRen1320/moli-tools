@@ -24,9 +24,15 @@ export default tseslint.config(
     },
   },
   {
-    files: ['*.config.*', 'vitest.setup.ts'],
+    files: ['*.config.*', 'vitest.setup.ts', 'scripts/**'],
     languageOptions: {
       globals: globals.node,
+    },
+  },
+  {
+    files: ['public/sw.js'],
+    languageOptions: {
+      globals: globals.serviceworker,
     },
   },
   prettier,
