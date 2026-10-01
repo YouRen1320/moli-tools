@@ -2,10 +2,15 @@ import { useState } from 'react';
 import ToolShell from '@components/ToolShell';
 import CopyButton from '@components/CopyButton';
 import {
+  clearHistory,
   generatePassword,
   entropyBits,
+  loadHistory,
+  saveToHistory,
   strengthLabel,
   LIMITS,
+  HISTORY_LIMIT,
+  type HistoryEntry,
   type PasswordOptions,
 } from './service';
 
@@ -23,6 +28,7 @@ export default function PasswordGenerator() {
   const [symbols, setSymbols] = useState(true);
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [history, setHistory] = useState<HistoryEntry[]>(() => loadHistory());
 
   const options: PasswordOptions = { length, uppercase, digits, symbols };
   const bits = entropyBits(options);
@@ -31,11 +37,19 @@ export default function PasswordGenerator() {
   const generate = () => {
     setError(null);
     try {
-      setPassword(generatePassword(options));
+      const generated = generatePassword(options);
+      setPassword(generated);
+      // 历史是敏感数据：仅保存在本机浏览器，界面常驻警示并支持一键清空
+      setHistory(saveToHistory(generated, options));
     } catch (cause) {
       setPassword('');
       setError(cause instanceof Error ? cause.message : '生成失败');
     }
+  };
+
+  const wipeHistory = () => {
+    clearHistory();
+    setHistory([]);
   };
 
   const toggles = [
@@ -97,6 +111,37 @@ export default function PasswordGenerator() {
               <code className="min-w-0 flex-1 text-sm leading-relaxed break-all">{password}</code>
               <CopyButton value={password} />
             </div>
+          </div>
+        )}
+
+        {history.length > 0 && (
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-neutral-700">
+                最近生成（{history.length}/{HISTORY_LIMIT}）
+              </p>
+              <button type="button" className="btn-secondary" onClick={wipeHistory}>
+                清空记录
+              </button>
+            </div>
+            <p className="rounded-lg border border-amber-300/70 bg-amber-100/70 px-3 py-2 text-xs leading-relaxed text-amber-900">
+              ⚠️
+              密码属于敏感信息：记录仅保存在此浏览器的本地存储中，不上传服务器；请勿在共用电脑上留存，不用时点击"清空记录"立即删除。
+            </p>
+            <ol className="space-y-2">
+              {history.map((entry) => (
+                <li key={entry.time} className="card flex items-center justify-between gap-3 py-2">
+                  <span className="min-w-0 flex-1">
+                    <code className="block truncate text-sm">{entry.password}</code>
+                    <span className="text-xs text-neutral-500">
+                      {new Date(entry.time).toLocaleTimeString('zh-CN', { hour12: false })} ·{' '}
+                      {entry.password.length} 位
+                    </span>
+                  </span>
+                  <CopyButton value={entry.password} label="复制" />
+                </li>
+              ))}
+            </ol>
           </div>
         )}
       </div>

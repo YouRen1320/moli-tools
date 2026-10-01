@@ -80,3 +80,66 @@ export function strengthLabel(bits: number): {
   if (bits < 80) return { label: '良好', tone: 'good' };
   return { label: '很强', tone: 'strong' };
 }
+
+// ============ 生成历史（localStorage） ============
+
+export const HISTORY_KEY = 'youren-password-history';
+export const HISTORY_LIMIT = 10;
+
+export interface HistoryEntry {
+  password: string;
+  /** 生成时间戳（毫秒） */
+  time: number;
+  options: PasswordOptions;
+}
+
+function isHistoryEntry(value: unknown): value is HistoryEntry {
+  if (typeof value !== 'object' || value === null) return false;
+  const entry = value as Record<string, unknown>;
+  return (
+    typeof entry.password === 'string' &&
+    typeof entry.time === 'number' &&
+    typeof entry.options === 'object' &&
+    entry.options !== null
+  );
+}
+
+/** 读取历史；损坏或缺失时返回空数组（历史属于敏感数据，读取失败宁可静默为空） */
+export function loadHistory(): HistoryEntry[] {
+  try {
+    const raw = localStorage.getItem(HISTORY_KEY);
+    if (!raw) return [];
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(isHistoryEntry).slice(0, HISTORY_LIMIT);
+  } catch {
+    return [];
+  }
+}
+
+/** 前插一条历史（相同密码移到最前），超出上限裁剪；返回新列表 */
+export function saveToHistory(
+  password: string,
+  options: PasswordOptions,
+  existing: HistoryEntry[] = loadHistory(),
+): HistoryEntry[] {
+  const entry: HistoryEntry = { password, time: Date.now(), options: { ...options } };
+  const history = [entry, ...existing.filter((item) => item.password !== password)].slice(
+    0,
+    HISTORY_LIMIT,
+  );
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  } catch {
+    /* 存储不可用（隐私模式等）时仅影响历史功能 */
+  }
+  return history;
+}
+
+export function clearHistory(): void {
+  try {
+    localStorage.removeItem(HISTORY_KEY);
+  } catch {
+    /* 忽略 */
+  }
+}
