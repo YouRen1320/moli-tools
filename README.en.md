@@ -2,13 +2,18 @@
 
 [中文说明](./README.md)
 
+[![CI](https://github.com/YouRen1320/youren-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/YouRen1320/youren-tools/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+
+![Dusk theme](docs/preview-dusk.png)
+
 A small, fast Chinese-first online toolbox. **Everything runs locally in your browser — no file ever leaves your device**, and it works offline once installed.
 
 ## Live
 
 **https://youren1320.github.io/youren-tools/**
 
-## Implemented (v1.0.0)
+## Implemented (v1.5.0)
 
 - **PDF**: merge, extract pages, convert pages to PNG/JPG (multi-page zip), watermark (tiled image or diagonal text)
 - **Image**: compress / convert to WebP / JPEG / PNG

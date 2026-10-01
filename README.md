@@ -1,12 +1,16 @@
 # YouRen工具箱（youren-tools）
 
+[![CI](https://github.com/YouRen1320/youren-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/YouRen1320/youren-tools/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
+[![Live](https://img.shields.io/badge/online-youren1320.github.io-8a63e8)](https://youren1320.github.io/youren-tools/)
+
 [English](./README.en.md)
 
 小而快的中文在线工具箱。**所有处理都在你自己的浏览器里完成，文件不上传服务器** —— 断网也能用。
 
 ## 已实现 / 未实现
 
-### ✅ 已实现（v1.0.0）
+### ✅ 已实现（v1.5.0）
 
 | 分类 | 工具          | 说明                                                     |
 | ---- | ------------- | -------------------------------------------------------- |
@@ -33,6 +37,10 @@
 | 开发 | UUID 生成器   | 批量生成 v4 UUID，一键复制                               |
 
 同时已具备：工具注册架构（新增工具零改路由）、服务层与组件测试（110 例）、ESLint + Prettier、类型检查、GitHub Actions CI（安装 → 检查 → 测试 → 构建）、Dependabot 周更、**PWA**（可安装到桌面/手机，Service Worker 本地缓存，离线可用）、**昼夜双主题**（黄昏/星空一键切换，跟随系统偏好）、**GitHub Pages 自动部署**（推送 main 即上线）、sitemap + robots.txt、WCAG AA 级可读性（玻璃面板对比度经工具核查）。
+
+![黄昏主题](docs/preview-dusk.png)
+
+![夜晚主题](docs/preview-night.png)
 
 ### ❌ 未实现（路线图）
 
