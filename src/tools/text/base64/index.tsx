@@ -51,7 +51,7 @@ export default function Base64Tool() {
           ))}
         </div>
 
-        <label className="block text-sm text-neutral-600" htmlFor="base64-input">
+        <label className="block text-sm text-neutral-700" htmlFor="base64-input">
           {mode === 'encode' ? '要编码的文本' : '要解码的 Base64'}
         </label>
         <textarea
@@ -87,7 +87,7 @@ export default function Base64Tool() {
 
         {output !== '' && (
           <div className="space-y-2">
-            <label className="block text-sm text-neutral-600" htmlFor="base64-output">
+            <label className="block text-sm text-neutral-700" htmlFor="base64-output">
               结果
             </label>
             <textarea id="base64-output" rows={5} className="text-input" readOnly value={output} />

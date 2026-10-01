@@ -51,7 +51,7 @@ export default function PasswordGenerator() {
       description="用浏览器加密级随机数生成强密码，长度与字符集可调，附强度评估。"
     >
       <div className="space-y-4">
-        <label className="block text-sm text-neutral-600" htmlFor="password-length">
+        <label className="block text-sm text-neutral-700" htmlFor="password-length">
           长度：{length} 位
           <input
             id="password-length"
@@ -79,7 +79,7 @@ export default function PasswordGenerator() {
           ))}
         </div>
 
-        <p className="text-sm text-neutral-600">
+        <p className="text-sm text-neutral-700">
           强度：<strong className={TONE_CLASS[strength.tone]}>{strength.label}</strong>
           <span className="ml-2 text-xs text-neutral-400">约 {bits} bit 熵</span>
         </p>
@@ -92,7 +92,7 @@ export default function PasswordGenerator() {
 
         {password !== '' && (
           <div className="space-y-2">
-            <p className="text-sm text-neutral-600">生成的密码</p>
+            <p className="text-sm text-neutral-700">生成的密码</p>
             <div className="card flex items-start justify-between gap-3">
               <code className="min-w-0 flex-1 text-sm leading-relaxed break-all">{password}</code>
               <CopyButton value={password} />

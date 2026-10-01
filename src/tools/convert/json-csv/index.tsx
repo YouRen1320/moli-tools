@@ -74,7 +74,7 @@ export default function JsonCsv() {
           )}
         </div>
 
-        <label className="block text-sm text-neutral-600" htmlFor="jsoncsv-input">
+        <label className="block text-sm text-neutral-700" htmlFor="jsoncsv-input">
           {direction === 'json2csv' ? '输入 JSON（对象数组）' : '输入 CSV（首行为表头）'}
         </label>
         <textarea
@@ -104,7 +104,7 @@ export default function JsonCsv() {
         {output !== '' && (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-sm text-neutral-600" htmlFor="jsoncsv-output">
+              <label className="text-sm text-neutral-700" htmlFor="jsoncsv-output">
                 结果
               </label>
               <CopyButton value={output} />

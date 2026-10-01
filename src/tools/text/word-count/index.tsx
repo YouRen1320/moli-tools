@@ -23,7 +23,7 @@ export default function WordCount() {
       description="中英混排友好的字数/词数/行数/段落统计，中文按字计词。"
     >
       <div className="space-y-4">
-        <label className="block text-sm text-neutral-600" htmlFor="word-count-input">
+        <label className="block text-sm text-neutral-700" htmlFor="word-count-input">
           输入文本（统计实时更新）
         </label>
         <textarea
@@ -39,7 +39,7 @@ export default function WordCount() {
           {STAT_ITEMS.map((item) => (
             <div key={item.key} className="card p-3 text-center">
               <p className="text-xl font-bold text-dusk-violet">{stats[item.key]}</p>
-              <p className="mt-0.5 text-xs text-neutral-500">{item.label}</p>
+              <p className="mt-0.5 text-xs text-neutral-600">{item.label}</p>
             </div>
           ))}
         </div>

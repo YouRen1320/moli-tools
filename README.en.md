@@ -8,22 +8,24 @@ A small, fast Chinese-first online toolbox. **Everything runs locally in your br
 
 **https://youren1320.github.io/youren-tools/**
 
-## Implemented (v0.6.0)
+## Implemented (v1.0.0)
 
-- **PDF**: merge, extract pages, convert pages to PNG (multi-page zip)
+- **PDF**: merge, extract pages, convert pages to PNG (multi-page zip), watermark (tiled image or diagonal text)
 - **Image**: compress / convert to WebP / JPEG / PNG
-- **Text**: Base64, JSON formatter, word counter (CJK-aware), URL codec, Markdown preview (sanitized), text diff
+- **Text**: Base64, JSON formatter, word counter (CJK-aware), URL codec, Markdown preview (sanitized), text diff, text cleaner (dedupe / sort / trim)
 - **Time**: Unix timestamp converter
 - **Generate**: QR code generator
-- **Design**: color converter (HEX / RGB / HSL)
-- **Dev**: hash calculator (SHA-1/256/384/512 via WebCrypto), password generator, UUID generator
+- **Design**: color converter (HEX / RGB / HSL), WCAG contrast checker
+- **Convert**: unit converter (metric & Chinese units: 里/尺/寸/斤/两), JSON ↔ CSV (RFC 4180, round-trip safe)
+- **Dev**: hash calculator (SHA-1/256/384/512 via WebCrypto), password generator (entropy-rated), UUID generator
 
-Also included: tool registry (zero route changes to add a tool), service & component tests, ESLint + Prettier, type checking, GitHub Actions CI (SHA-pinned actions), Dependabot, PWA (installable & offline), day/night themes, automatic deployment to GitHub Pages.
+Also included: tool registry (zero route changes to add a tool), service & component tests (110 cases), ESLint + Prettier, type checking, GitHub Actions CI (SHA-pinned actions), Dependabot, PWA (installable & offline), day/night themes, automatic deployment to GitHub Pages, sitemap + robots.txt, WCAG AA readability (glass panels audited with our own contrast tool).
 
 ## Not implemented (roadmap)
 
-- PDF compression / watermarking, audio & video processing (ffmpeg.wasm)
-- Multi-language UI, Douyin / Xiaohongshu tools (needs a small backend; compliance under review)
+- Custom domain binding; PDF compression (needs a qpdf-wasm-grade solution — pdf-lib's useObjectStreams measured 0.0% reduction on both image-heavy and text PDFs)
+- Douyin / Xiaohongshu tools (needs a small backend; compliance under review)
+- Audio & video processing (ffmpeg.wasm), multi-language UI
 
 ## Quick start
 

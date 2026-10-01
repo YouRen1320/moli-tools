@@ -34,7 +34,7 @@ export default function JsonFormat() {
       description="格式化、压缩与校验 JSON，出错时提示具体位置。"
     >
       <div className="space-y-4">
-        <label className="block text-sm text-neutral-600" htmlFor="json-input">
+        <label className="block text-sm text-neutral-700" htmlFor="json-input">
           输入 JSON
         </label>
         <textarea
@@ -54,7 +54,7 @@ export default function JsonFormat() {
             压缩
           </button>
           <label
-            className="ml-2 flex items-center gap-2 text-sm text-neutral-600"
+            className="ml-2 flex items-center gap-2 text-sm text-neutral-700"
             htmlFor="indent-select"
           >
             缩进
@@ -82,7 +82,7 @@ export default function JsonFormat() {
         {output !== '' && (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-sm text-neutral-600" htmlFor="json-output">
+              <label className="text-sm text-neutral-700" htmlFor="json-output">
                 结果
               </label>
               <CopyButton value={output} />

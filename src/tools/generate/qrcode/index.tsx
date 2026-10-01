@@ -37,7 +37,7 @@ export default function Qrcode() {
     >
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-4">
-          <label className="block text-sm text-neutral-600" htmlFor="qr-text">
+          <label className="block text-sm text-neutral-700" htmlFor="qr-text">
             内容（链接或任意文本）
           </label>
           <textarea
@@ -49,7 +49,7 @@ export default function Qrcode() {
             onChange={(event) => setText(event.target.value)}
           />
           <div className="flex flex-wrap gap-4">
-            <label className="text-sm text-neutral-600" htmlFor="qr-width">
+            <label className="text-sm text-neutral-700" htmlFor="qr-width">
               尺寸 {width}px
               <input
                 id="qr-width"
@@ -62,7 +62,7 @@ export default function Qrcode() {
                 onChange={(event) => setWidth(Number(event.target.value))}
               />
             </label>
-            <label className="text-sm text-neutral-600" htmlFor="qr-level">
+            <label className="text-sm text-neutral-700" htmlFor="qr-level">
               容错等级
               <select
                 id="qr-level"

@@ -107,7 +107,7 @@ export default function PdfToImage() {
 
         {source && (
           <>
-            <label className="block text-sm text-neutral-600" htmlFor="pdf-image-pages">
+            <label className="block text-sm text-neutral-700" htmlFor="pdf-image-pages">
               页码（1 起始，支持逗号与连字符，例如 1,3-5）
             </label>
             <input
@@ -118,7 +118,7 @@ export default function PdfToImage() {
               value={pagesInput}
               onChange={(event) => setPagesInput(event.target.value)}
             />
-            <label className="block text-sm text-neutral-600" htmlFor="pdf-image-scale">
+            <label className="block text-sm text-neutral-700" htmlFor="pdf-image-scale">
               清晰度（{scale}x，越大越清晰、文件越大）
               <select
                 id="pdf-image-scale"

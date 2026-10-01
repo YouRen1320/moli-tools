@@ -64,7 +64,7 @@ export default function UnitConverter() {
         </div>
 
         <div className="flex flex-wrap items-end gap-3">
-          <label className="text-sm text-neutral-600" htmlFor="unit-value">
+          <label className="text-sm text-neutral-700" htmlFor="unit-value">
             数值
             <input
               id="unit-value"
@@ -76,7 +76,7 @@ export default function UnitConverter() {
               onChange={(event) => setValueText(event.target.value)}
             />
           </label>
-          <label className="text-sm text-neutral-600" htmlFor="unit-from">
+          <label className="text-sm text-neutral-700" htmlFor="unit-from">
             单位
             <select
               id="unit-from"
@@ -98,7 +98,7 @@ export default function UnitConverter() {
         {rows.length > 0 && (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <p className="text-sm text-neutral-600">换算结果</p>
+              <p className="text-sm text-neutral-700">换算结果</p>
               <CopyButton
                 value={rows.map((row) => `${row.unit}\t${row.value}`).join('\n')}
                 label="复制全部"
@@ -112,7 +112,7 @@ export default function UnitConverter() {
                     row.unit === from ? 'border-dusk-violet/60' : ''
                   }`}
                 >
-                  <span className="text-sm text-neutral-500">{row.unit}</span>
+                  <span className="text-sm text-neutral-600">{row.unit}</span>
                   <strong className="text-sm">{row.value}</strong>
                 </div>
               ))}

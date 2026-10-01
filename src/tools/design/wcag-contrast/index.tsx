@@ -28,7 +28,7 @@ export default function WcagContrast() {
   }
 
   const colorInput = (id: string, label: string, value: string, onChange: (v: string) => void) => (
-    <label className="text-sm text-neutral-600" htmlFor={id}>
+    <label className="text-sm text-neutral-700" htmlFor={id}>
       {label}
       <span className="mt-1 flex items-center gap-2">
         <input
@@ -62,7 +62,7 @@ export default function WcagContrast() {
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs text-neutral-500">试试：</span>
+          <span className="text-xs text-neutral-600">试试：</span>
           {PRESETS.map((preset) => (
             <button
               key={`${preset.fg}-${preset.bg}`}
@@ -114,7 +114,7 @@ export default function WcagContrast() {
                     >
                       {pass ? '✓ 通过' : '✗ 未过'}
                     </p>
-                    <p className="mt-0.5 text-xs text-neutral-500">
+                    <p className="mt-0.5 text-xs text-neutral-600">
                       {badge.label}（{badge.hint}）
                     </p>
                   </div>

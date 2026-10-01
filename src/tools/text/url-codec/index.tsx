@@ -59,7 +59,7 @@ export default function UrlCodec() {
           ))}
         </div>
 
-        <label className="block text-sm text-neutral-600" htmlFor="url-input">
+        <label className="block text-sm text-neutral-700" htmlFor="url-input">
           {action === 'encode' ? '要编码的文本' : '要解码的字符串'}
         </label>
         <textarea
@@ -95,7 +95,7 @@ export default function UrlCodec() {
         {output !== '' && (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-sm text-neutral-600" htmlFor="url-output">
+              <label className="text-sm text-neutral-700" htmlFor="url-output">
                 结果
               </label>
               <CopyButton value={output} />
