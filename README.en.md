@@ -10,7 +10,7 @@ A small, fast Chinese-first online toolbox. **Everything runs locally in your br
 
 ## Implemented (v1.0.0)
 
-- **PDF**: merge, extract pages, convert pages to PNG (multi-page zip), watermark (tiled image or diagonal text)
+- **PDF**: merge, extract pages, convert pages to PNG/JPG (multi-page zip), watermark (tiled image or diagonal text)
 - **Image**: compress / convert to WebP / JPEG / PNG
 - **Text**: Base64, JSON formatter, word counter (CJK-aware), URL codec, Markdown preview (sanitized), text diff, text cleaner (dedupe / sort / trim)
 - **Time**: Unix timestamp converter
