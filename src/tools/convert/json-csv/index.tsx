@@ -2,6 +2,7 @@ import { useState } from 'react';
 import ToolShell from '@components/ToolShell';
 import CopyButton from '@components/CopyButton';
 import { csvToJson, getCsvHeader, getJsonKeys, jsonToCsv } from './service';
+import { downloadBlob } from '@lib/download';
 
 type Direction = 'json2csv' | 'csv2json';
 
@@ -181,7 +182,23 @@ export default function JsonCsv() {
               <label className="block text-sm text-neutral-700" htmlFor="jsoncsv-output">
                 结果
               </label>
-              <CopyButton value={output} />
+              <span className="flex gap-2">
+                <CopyButton value={output} />
+                <button
+                  type="button"
+                  className="btn-secondary"
+                  onClick={() =>
+                    downloadBlob(
+                      new Blob([output], {
+                        type: direction === 'json2csv' ? 'text/csv' : 'application/json',
+                      }),
+                      direction === 'json2csv' ? 'export.csv' : 'export.json',
+                    )
+                  }
+                >
+                  ⬇ 下载文件
+                </button>
+              </span>
             </div>
             <textarea
               id="jsoncsv-output"
