@@ -10,6 +10,7 @@ import { tool as markdownPreview } from './text/markdown-preview/meta';
 import { tool as textDiff } from './text/text-diff/meta';
 import { tool as textClean } from './text/text-clean/meta';
 import { tool as unitConverter } from './convert/unit-converter/meta';
+import { tool as jsonCsv } from './convert/json-csv/meta';
 import { tool as wcagContrast } from './design/wcag-contrast/meta';
 import { tool as pdfWatermark } from './pdf/pdf-watermark/meta';
 import { tool as timestamp } from './time/timestamp/meta';
@@ -40,6 +41,7 @@ export const allTools: ToolMeta[] = [
   passwordGenerator,
   uuidGenerator,
   unitConverter,
+  jsonCsv,
   wcagContrast,
 ];
 
