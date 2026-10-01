@@ -24,7 +24,7 @@ export default function MarkdownPreview() {
     >
       <div className="grid gap-4 md:grid-cols-2">
         <div className="space-y-2">
-          <label className="block text-sm text-neutral-600" htmlFor="markdown-input">
+          <label className="block text-sm text-neutral-700" htmlFor="markdown-input">
             Markdown
           </label>
           <textarea
@@ -37,7 +37,7 @@ export default function MarkdownPreview() {
         </div>
         <div className="space-y-2">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-neutral-600">预览</span>
+            <span className="text-sm text-neutral-700">预览</span>
             <CopyButton value={html} label="复制 HTML" />
           </div>
           <div

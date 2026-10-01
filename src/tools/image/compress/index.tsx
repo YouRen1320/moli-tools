@@ -51,7 +51,7 @@ export default function ImageCompress() {
     >
       <div className="space-y-4">
         <div className="card flex flex-wrap items-end gap-4">
-          <label className="text-sm text-neutral-600" htmlFor="format-select">
+          <label className="text-sm text-neutral-700" htmlFor="format-select">
             输出格式
             <select
               id="format-select"
@@ -66,7 +66,7 @@ export default function ImageCompress() {
               ))}
             </select>
           </label>
-          <label className="min-w-48 flex-1 text-sm text-neutral-600" htmlFor="quality-range">
+          <label className="min-w-48 flex-1 text-sm text-neutral-700" htmlFor="quality-range">
             质量：{Math.round(quality * 100)}%
             {format === 'png' && (
               <span className="ml-1 text-xs text-neutral-400">（PNG 无损，此项不生效）</span>
@@ -97,7 +97,7 @@ export default function ImageCompress() {
         {results.length > 0 && (
           <table className="w-full text-sm">
             <thead>
-              <tr className="text-left text-neutral-500">
+              <tr className="text-left text-neutral-600">
                 <th className="py-2">文件</th>
                 <th className="py-2">原始</th>
                 <th className="py-2">压缩后</th>
@@ -109,7 +109,7 @@ export default function ImageCompress() {
               {results.map((result) => (
                 <tr key={result.name} className="border-t border-neutral-100">
                   <td className="max-w-48 truncate py-2">{result.name}</td>
-                  <td className="py-2 text-neutral-500">{formatBytes(result.before)}</td>
+                  <td className="py-2 text-neutral-600">{formatBytes(result.before)}</td>
                   <td className="py-2">{formatBytes(result.after)}</td>
                   <td className="py-2 text-dusk-violet">
                     {savedPercent(result.before, result.after)}%

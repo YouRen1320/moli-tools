@@ -36,7 +36,7 @@ export default function ColorConvert() {
       description="HEX / RGB / HSL 互转，实时预览，支持三种格式直接输入。"
     >
       <div className="space-y-4">
-        <label className="block text-sm text-neutral-600" htmlFor="color-input">
+        <label className="block text-sm text-neutral-700" htmlFor="color-input">
           颜色值（如 #ff8a5c、rgb(255, 138, 92)、hsl(17, 100%, 68%)）
         </label>
         <input
@@ -49,7 +49,7 @@ export default function ColorConvert() {
         />
 
         <div className="flex items-center gap-2">
-          <span className="text-xs text-neutral-500">快捷色板：</span>
+          <span className="text-xs text-neutral-600">快捷色板：</span>
           {PRESETS.map((preset) => (
             <button
               key={preset}

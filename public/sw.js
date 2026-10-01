@@ -3,7 +3,7 @@
  * 策略：页面导航 network-first（保证更新及时），静态资源 cache-first（文件名带哈希、内容不可变）。
  * 升级：改变 VERSION 常量即可让 activate 阶段清理全部旧缓存。
  */
-const VERSION = 'v1';
+const VERSION = 'v2';
 const SHELL_CACHE = `youren-shell-${VERSION}`;
 const RUNTIME_CACHE = `youren-runtime-${VERSION}`;
 

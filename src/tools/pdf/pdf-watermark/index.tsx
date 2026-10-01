@@ -129,7 +129,7 @@ export default function PdfWatermark() {
                     hint="PNG/JPG 均可，将平铺到每一页"
                   />
                 )}
-                <label className="block text-sm text-neutral-600" htmlFor="wm-tile">
+                <label className="block text-sm text-neutral-700" htmlFor="wm-tile">
                   水印大小：{Math.round(tileRatio * 100)}%（相对页面短边）
                   <input
                     id="wm-tile"
@@ -145,7 +145,7 @@ export default function PdfWatermark() {
               </div>
             ) : (
               <div className="space-y-3">
-                <label className="block text-sm text-neutral-600" htmlFor="wm-text">
+                <label className="block text-sm text-neutral-700" htmlFor="wm-text">
                   水印文字（英文/数字，如 CONFIDENTIAL）
                 </label>
                 <input
@@ -155,7 +155,7 @@ export default function PdfWatermark() {
                   value={watermarkText}
                   onChange={(event) => setWatermarkText(event.target.value)}
                 />
-                <label className="block text-sm text-neutral-600" htmlFor="wm-font">
+                <label className="block text-sm text-neutral-700" htmlFor="wm-font">
                   字号：{fontSize}
                   <input
                     id="wm-font"
@@ -171,7 +171,7 @@ export default function PdfWatermark() {
               </div>
             )}
 
-            <label className="block text-sm text-neutral-600" htmlFor="wm-opacity">
+            <label className="block text-sm text-neutral-700" htmlFor="wm-opacity">
               透明度：{Math.round(opacity * 100)}%
               <input
                 id="wm-opacity"

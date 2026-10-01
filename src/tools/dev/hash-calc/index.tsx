@@ -128,7 +128,7 @@ export default function HashCalc() {
 
         {mode === 'text' ? (
           <div className="space-y-2">
-            <label className="block text-sm text-neutral-600" htmlFor="hash-text">
+            <label className="block text-sm text-neutral-700" htmlFor="hash-text">
               输入文本（摘要实时更新）
             </label>
             <textarea
@@ -165,7 +165,7 @@ export default function HashCalc() {
 
         {hash !== '' && (
           <div className="space-y-2">
-            <p className="text-sm text-neutral-600">{algorithm} 摘要</p>
+            <p className="text-sm text-neutral-700">{algorithm} 摘要</p>
             <div className="card flex items-start justify-between gap-3">
               <code className="min-w-0 flex-1 text-xs leading-relaxed break-all">{hash}</code>
               <CopyButton value={hash} />

@@ -26,7 +26,7 @@ export default function UuidGenerator() {
     >
       <div className="space-y-4">
         <div className="flex flex-wrap items-end gap-3">
-          <label className="text-sm text-neutral-600" htmlFor="uuid-count">
+          <label className="text-sm text-neutral-700" htmlFor="uuid-count">
             数量（1-{MAX_COUNT}）
             <input
               id="uuid-count"
@@ -48,7 +48,7 @@ export default function UuidGenerator() {
         {uuids.length > 0 && (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <p className="text-sm text-neutral-600">生成结果</p>
+              <p className="text-sm text-neutral-700">生成结果</p>
               <CopyButton value={uuids.join('\n')} label="复制全部" />
             </div>
             <ol className="space-y-2">

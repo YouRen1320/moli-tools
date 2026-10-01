@@ -74,7 +74,7 @@ export default function ExtractPages() {
 
         {source && (
           <div className="space-y-2">
-            <label className="block text-sm text-neutral-600" htmlFor="pages-input">
+            <label className="block text-sm text-neutral-700" htmlFor="pages-input">
               页码（1 起始，支持逗号与连字符，例如 1,3-5）
             </label>
             <input

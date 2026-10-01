@@ -5,7 +5,7 @@ import { diffTexts, type DiffRow } from './service';
 const ROW_STYLE: Record<DiffRow['type'], string> = {
   added: 'bg-emerald-100/80 text-emerald-900',
   removed: 'bg-rose-100/80 text-rose-900 line-through decoration-rose-400',
-  common: 'text-neutral-600',
+  common: 'text-neutral-700',
 };
 
 const ROW_PREFIX: Record<DiffRow['type'], string> = {
@@ -26,7 +26,7 @@ export default function TextDiff() {
       <div className="space-y-4">
         <div className="grid gap-4 md:grid-cols-2">
           <div className="space-y-2">
-            <label className="block text-sm text-neutral-600" htmlFor="diff-old">
+            <label className="block text-sm text-neutral-700" htmlFor="diff-old">
               原文本
             </label>
             <textarea
@@ -39,7 +39,7 @@ export default function TextDiff() {
             />
           </div>
           <div className="space-y-2">
-            <label className="block text-sm text-neutral-600" htmlFor="diff-new">
+            <label className="block text-sm text-neutral-700" htmlFor="diff-new">
               新文本
             </label>
             <textarea
@@ -64,7 +64,7 @@ export default function TextDiff() {
 
         {result && (
           <div className="space-y-2">
-            <p className="text-sm text-neutral-600">
+            <p className="text-sm text-neutral-700">
               新增 <strong className="text-emerald-700">{result.addedLines}</strong> 行 · 删除{' '}
               <strong className="text-rose-700">{result.removedLines}</strong> 行
             </p>

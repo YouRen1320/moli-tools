@@ -22,25 +22,25 @@
     @apply inline-flex items-center justify-center gap-1 rounded-full bg-gradient-to-r from-dusk-coral to-dusk-violet px-5 py-2 text-sm font-medium text-white shadow-[0_8px_24px_rgba(138,99,232,0.35)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:opacity-50;
   }
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-1 rounded-full border border-white/60 bg-white/60 px-5 py-2 text-sm font-medium text-neutral-700 backdrop-blur transition hover:bg-white/85 disabled:cursor-not-allowed disabled:opacity-50;
+    @apply inline-flex items-center justify-center gap-1 rounded-full border border-white/60 bg-white/75 px-5 py-2 text-sm font-medium text-neutral-800 backdrop-blur transition hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-50;
   }
   .card {
-    @apply rounded-2xl border border-white/50 bg-white/60 p-4 shadow-[0_8px_32px_rgba(90,60,140,0.12)] backdrop-blur-md transition;
+    @apply rounded-2xl border border-white/60 bg-white/70 p-4 shadow-[0_8px_32px_rgba(90,60,140,0.12)] backdrop-blur-md transition;
   }
   .card-hoverable {
     @apply hover:-translate-y-0.5 hover:border-white/80 hover:bg-white/80 hover:shadow-[0_14px_40px_rgba(90,60,140,0.18)];
   }
   .glass-panel {
-    @apply rounded-2xl border border-white/50 bg-white/65 p-6 shadow-[0_8px_32px_rgba(90,60,140,0.12)] backdrop-blur-md;
+    @apply rounded-2xl border border-white/60 bg-white/75 p-6 shadow-[0_8px_32px_rgba(90,60,140,0.12)] backdrop-blur-md;
   }
   .text-input {
-    @apply w-full rounded-xl border border-white/60 bg-white/70 p-3 font-mono text-sm text-neutral-800 outline-none transition placeholder:text-neutral-400 focus:border-dusk-violet/60 focus:ring-2 focus:ring-dusk-violet/20;
+    @apply w-full rounded-xl border border-white/60 bg-white/80 p-3 font-mono text-sm text-neutral-800 outline-none transition placeholder:text-neutral-400 focus:border-dusk-violet/60 focus:ring-2 focus:ring-dusk-violet/20;
   }
   .error-text {
     @apply text-sm text-rose-700;
   }
   .dropzone {
-    @apply flex cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl border-2 border-dashed border-white/70 bg-white/40 p-8 text-center transition hover:border-dusk-violet/70 hover:bg-white/60;
+    @apply flex cursor-pointer flex-col items-center justify-center gap-1 rounded-2xl border-2 border-dashed border-white/70 bg-white/70 p-8 text-center transition hover:border-dusk-violet/70 hover:bg-white/85;
   }
   .dropzone-active {
     @apply border-dusk-violet/80 bg-white/70;
