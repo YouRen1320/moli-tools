@@ -1,8 +1,19 @@
 import JSZip from 'jszip';
 
+export type PageImageFormat = 'png' | 'jpeg';
+
 export interface RenderedImage {
   name: string;
   bytes: Uint8Array;
+}
+
+export function resolveImageName(
+  baseName: string,
+  pageNumber: number,
+  format: PageImageFormat,
+): string {
+  const ext = format === 'jpeg' ? 'jpg' : 'png';
+  return `${baseName}-p${pageNumber}.${ext}`;
 }
 
 /** 多张图片打包为 zip；单张时原样返回，方便直接下载 */

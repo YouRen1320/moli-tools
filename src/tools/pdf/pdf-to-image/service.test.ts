@@ -1,6 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { bundleImages, type RenderedImage } from './service';
+import { bundleImages, resolveImageName, type RenderedImage } from './service';
 import { parsePageRanges } from '@lib/pageRange';
+
+describe('resolveImageName', () => {
+  it('按格式生成文件名（jpeg → jpg 扩展名）', () => {
+    expect(resolveImageName('doc', 3, 'png')).toBe('doc-p3.png');
+    expect(resolveImageName('doc', 12, 'jpeg')).toBe('doc-p12.jpg');
+  });
+});
 
 describe('bundleImages', () => {
   const make = (name: string): RenderedImage => ({ name, bytes: new Uint8Array([1, 2, 3]) });

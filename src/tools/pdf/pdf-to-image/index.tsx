@@ -3,7 +3,13 @@ import * as pdfjsLib from 'pdfjs-dist';
 import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import ToolShell from '@components/ToolShell';
 import FileDrop from '@components/FileDrop';
-import { bundleImages, type RenderedImage } from './service';
+import {
+  bundleImages,
+  resolveImageName,
+  type PageImageFormat,
+  type RenderedImage,
+} from './service';
+import { canvasToBlob, createCanvas } from '@lib/canvas';
 import { parsePageRanges } from '@lib/pageRange';
 import { downloadBytes } from '@lib/download';
 
@@ -17,27 +23,37 @@ interface Source {
 
 const SCALES = [1, 1.5, 2, 3];
 
+const FORMATS: { value: PageImageFormat; label: string }[] = [
+  { value: 'png', label: 'PNG（无损）' },
+  { value: 'jpeg', label: 'JPG（体积小）' },
+];
+
+const MIME_BY_FORMAT: Record<PageImageFormat, string> = {
+  png: 'image/png',
+  jpeg: 'image/jpeg',
+};
+
 async function renderPages(
   source: Source,
   pages: number[],
   scale: number,
+  format: PageImageFormat,
+  quality: number,
 ): Promise<RenderedImage[]> {
   const doc = await pdfjsLib.getDocument({ data: source.data }).promise;
+  const baseName = source.name.replace(/\.pdf$/i, '');
   const images: RenderedImage[] = [];
   for (const pageNumber of pages) {
     const page = await doc.getPage(pageNumber);
     const viewport = page.getViewport({ scale });
-    const canvas = document.createElement('canvas');
-    canvas.width = Math.floor(viewport.width);
-    canvas.height = Math.floor(viewport.height);
-    const context = canvas.getContext('2d');
-    if (!context) throw new Error('当前浏览器不支持 canvas 绘制');
+    const { canvas, context } = createCanvas(
+      Math.floor(viewport.width),
+      Math.floor(viewport.height),
+    );
     await page.render({ canvas, canvasContext: context, viewport }).promise;
-    const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, 'image/png'));
-    if (!blob) throw new Error('页面编码失败，请重试');
-    const baseName = source.name.replace(/\.pdf$/i, '');
+    const blob = await canvasToBlob(canvas, { mime: MIME_BY_FORMAT[format], quality });
     images.push({
-      name: `${baseName}-p${pageNumber}.png`,
+      name: resolveImageName(baseName, pageNumber, format),
       bytes: new Uint8Array(await blob.arrayBuffer()),
     });
   }
@@ -48,6 +64,8 @@ export default function PdfToImage() {
   const [source, setSource] = useState<Source | null>(null);
   const [pagesInput, setPagesInput] = useState('');
   const [scale, setScale] = useState(2);
+  const [format, setFormat] = useState<PageImageFormat>('png');
+  const [quality, setQuality] = useState(0.85);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -70,7 +88,7 @@ export default function PdfToImage() {
     setError(null);
     try {
       const pages = parsePageRanges(pagesInput, source.pageCount);
-      const images = await renderPages(source, pages, scale);
+      const images = await renderPages(source, pages, scale, format, quality);
       const bundle = await bundleImages(images);
       downloadBytes(bundle.bytes, bundle.name, 'application/octet-stream');
     } catch (cause) {
@@ -84,7 +102,7 @@ export default function PdfToImage() {
     <ToolShell
       icon="🏞️"
       title="PDF 转图片"
-      description="按页码把 PDF 页面渲染为 PNG，多页自动打包成 zip 下载。"
+      description="按页码把 PDF 页面渲染为图片，多页自动打包成 zip 下载。"
     >
       <div className="space-y-4">
         {!source ? (
@@ -105,6 +123,54 @@ export default function PdfToImage() {
           </div>
         )}
 
+        <div className="flex flex-wrap items-end gap-4">
+          <label className="text-sm text-neutral-700" htmlFor="pdf-image-format">
+            输出格式
+            <select
+              id="pdf-image-format"
+              className="mt-1 block rounded-lg border border-neutral-300 bg-white/70 px-2 py-1.5 text-sm"
+              value={format}
+              onChange={(event) => setFormat(event.target.value as PageImageFormat)}
+            >
+              {FORMATS.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="min-w-40 flex-1 text-sm text-neutral-700" htmlFor="pdf-image-scale">
+            清晰度（{scale}x，越大越清晰、文件越大）
+            <select
+              id="pdf-image-scale"
+              className="mt-1 block rounded-lg border border-neutral-300 bg-white/70 px-2 py-1.5 text-sm"
+              value={scale}
+              onChange={(event) => setScale(Number(event.target.value))}
+            >
+              {SCALES.map((item) => (
+                <option key={item} value={item}>
+                  {item}x
+                </option>
+              ))}
+            </select>
+          </label>
+          {format === 'jpeg' && (
+            <label className="min-w-40 flex-1 text-sm text-neutral-700" htmlFor="pdf-image-quality">
+              JPG 质量：{Math.round(quality * 100)}%
+              <input
+                id="pdf-image-quality"
+                type="range"
+                min={0.4}
+                max={0.95}
+                step={0.05}
+                className="mt-1 w-full accent-dusk-violet"
+                value={quality}
+                onChange={(event) => setQuality(Number(event.target.value))}
+              />
+            </label>
+          )}
+        </div>
+
         {source && (
           <>
             <label className="block text-sm text-neutral-700" htmlFor="pdf-image-pages">
@@ -118,23 +184,8 @@ export default function PdfToImage() {
               value={pagesInput}
               onChange={(event) => setPagesInput(event.target.value)}
             />
-            <label className="block text-sm text-neutral-700" htmlFor="pdf-image-scale">
-              清晰度（{scale}x，越大越清晰、文件越大）
-              <select
-                id="pdf-image-scale"
-                className="mt-1 block rounded-lg border border-neutral-300 bg-white/70 px-2 py-1.5 text-sm"
-                value={scale}
-                onChange={(event) => setScale(Number(event.target.value))}
-              >
-                {SCALES.map((item) => (
-                  <option key={item} value={item}>
-                    {item}x
-                  </option>
-                ))}
-              </select>
-            </label>
             <button type="button" className="btn-primary" onClick={convert} disabled={busy}>
-              {busy ? '渲染中…' : '转换为 PNG 并下载'}
+              {busy ? '渲染中…' : `转换为 ${format.toUpperCase()} 并下载`}
             </button>
           </>
         )}
