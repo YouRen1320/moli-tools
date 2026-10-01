@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { csvToJson, jsonToCsv, parseCsv } from './service';
+import { csvToJson, getJsonKeys, getCsvHeader, jsonToCsv, parseCsv } from './service';
 
 describe('parseCsv', () => {
   it('解析引号内的逗号与换行', () => {
@@ -73,5 +73,35 @@ describe('csvToJson', () => {
     const original = 'name,text,age\n茉莉,"含,逗号",3\nMoli,"line1\nline2",4';
     const json = csvToJson(original, { convertNumbers: true });
     expect(jsonToCsv(json)).toBe(original);
+  });
+});
+
+describe('列选择与表头重命名（v1.1.0）', () => {
+  it('includeKeys 选择子集并按给出顺序输出', () => {
+    expect(jsonToCsv('[{"a":1,"b":2,"c":3}]', { includeKeys: ['c', 'a'] })).toBe('c,a\n3,1');
+  });
+
+  it('includeKeys 忽略不存在的键', () => {
+    expect(jsonToCsv('[{"a":1}]', { includeKeys: ['a', 'ghost'] })).toBe('a\n1');
+  });
+
+  it('全部键都被取消时提示至少选择一列', () => {
+    expect(() => jsonToCsv('[{"a":1}]', { includeKeys: [] })).toThrow('请至少选择一列');
+  });
+
+  it('getJsonKeys 提取列名，非法输入返回 null', () => {
+    expect(getJsonKeys('[{"a":1,"b":2},{"a":3}]')).toEqual(['a', 'b']);
+    expect(getJsonKeys('{bad')).toBeNull();
+  });
+
+  it('getCsvHeader 提取表头，空输入返回 null', () => {
+    expect(getCsvHeader('a,b\n1,2')).toEqual(['a', 'b']);
+    expect(getCsvHeader('')).toBeNull();
+  });
+
+  it('headerNames 按列位置重命名，缺省沿用原名', () => {
+    const json = csvToJson('a,b\n1,2', { headerNames: { 0: '列一' }, convertNumbers: true });
+    expect(json).toContain('"列一": 1');
+    expect(json).toContain('"b": 2');
   });
 });
