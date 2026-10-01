@@ -1,5 +1,7 @@
 import { canvasToBlob, createCanvas, resolveMime, type OutputFormat } from '@lib/canvas';
 
+export type { OutputFormat };
+
 export interface CompressOptions {
   format: OutputFormat;
   /** 0-1，仅对有损格式（webp/jpeg）生效 */

@@ -3,7 +3,12 @@ import * as pdfjsLib from 'pdfjs-dist';
 import workerSrc from 'pdfjs-dist/build/pdf.worker.min.mjs?url';
 import ToolShell from '@components/ToolShell';
 import FileDrop from '@components/FileDrop';
-import { bundleImages, resolveImageName, type PageImageFormat } from './service';
+import {
+  bundleImages,
+  resolveImageName,
+  type PageImageFormat,
+  type RenderedImage,
+} from './service';
 import { canvasToBlob, createCanvas } from '@lib/canvas';
 import { parsePageRanges } from '@lib/pageRange';
 import { downloadBytes } from '@lib/download';
