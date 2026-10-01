@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import ToolShell from '@components/ToolShell';
 import CopyButton from '@components/CopyButton';
-import { csvToJson, jsonToCsv } from './service';
+import { csvToJson, getCsvHeader, getJsonKeys, jsonToCsv } from './service';
 
 type Direction = 'json2csv' | 'csv2json';
 
@@ -13,25 +13,46 @@ export default function JsonCsv() {
   const [direction, setDirection] = useState<Direction>('json2csv');
   const [input, setInput] = useState(SAMPLE_JSON);
   const [convertNumbers, setConvertNumbers] = useState(true);
-  const [output, setOutput] = useState('');
-  const [error, setError] = useState<string | null>(null);
+  // JSON→CSV 的列选择：null 表示全选
+  const [includeKeys, setIncludeKeys] = useState<string[] | null>(null);
+  // CSV→JSON 的表头重命名：按列位置记录新名
+  const [headerNames, setHeaderNames] = useState<Record<number, string>>({});
 
-  const run = () => {
-    setError(null);
-    try {
-      setOutput(direction === 'json2csv' ? jsonToCsv(input) : csvToJson(input, { convertNumbers }));
-    } catch (cause) {
-      setOutput('');
-      setError(cause instanceof Error ? cause.message : '转换失败');
-    }
+  // 全部渲染期派生，无副作用
+  const jsonKeys = direction === 'json2csv' ? getJsonKeys(input) : null;
+  const csvHeader = direction === 'csv2json' ? getCsvHeader(input) : null;
+
+  let output = '';
+  let error: string | null = null;
+  try {
+    output =
+      direction === 'json2csv'
+        ? jsonToCsv(input, { includeKeys: includeKeys ?? undefined })
+        : csvToJson(input, { convertNumbers, headerNames });
+  } catch (cause) {
+    error = cause instanceof Error ? cause.message : '转换失败';
+  }
+
+  const handleTextChange = (value: string) => {
+    setInput(value);
+    // 输入变化后列结构可能不同，重置选择状态
+    setIncludeKeys(null);
+    setHeaderNames({});
   };
 
   const switchDirection = () => {
     const next: Direction = direction === 'json2csv' ? 'csv2json' : 'json2csv';
     setDirection(next);
     setInput(output || (next === 'csv2json' ? SAMPLE_CSV : SAMPLE_JSON));
-    setOutput('');
-    setError(null);
+    setIncludeKeys(null);
+    setHeaderNames({});
+  };
+
+  const toggleKey = (key: string) => {
+    const allKeys = jsonKeys ?? [];
+    const base = includeKeys ?? allKeys;
+    const next = base.includes(key) ? base.filter((k) => k !== key) : [...base, key];
+    setIncludeKeys(next);
   };
 
   return (
@@ -61,6 +82,9 @@ export default function JsonCsv() {
               {item.label}
             </button>
           ))}
+          <button type="button" className="btn-secondary" onClick={switchDirection}>
+            切换方向（用结果继续）
+          </button>
           {direction === 'csv2json' && (
             <label className="ml-2 flex items-center gap-2 text-sm text-neutral-700">
               <input
@@ -74,6 +98,53 @@ export default function JsonCsv() {
           )}
         </div>
 
+        {/* JSON→CSV：列选择 */}
+        {direction === 'json2csv' && jsonKeys !== null && jsonKeys.length > 0 && (
+          <div className="flex flex-wrap items-center gap-2">
+            <span className="text-xs text-neutral-600">导出列：</span>
+            {jsonKeys.map((key) => {
+              const checked = includeKeys === null || includeKeys.includes(key);
+              return (
+                <button
+                  key={key}
+                  type="button"
+                  aria-pressed={checked}
+                  onClick={() => toggleKey(key)}
+                  className={`rounded-full px-3 py-1 text-xs font-medium transition ${
+                    checked
+                      ? 'bg-dusk-violet text-white'
+                      : 'border border-white/60 bg-white/60 text-neutral-500 hover:bg-white/85'
+                  }`}
+                >
+                  {checked ? '✓ ' : ''}
+                  {key}
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* CSV→JSON：表头重命名 */}
+        {direction === 'csv2json' && csvHeader !== null && (
+          <div className="flex flex-wrap items-end gap-3">
+            {csvHeader.map((name, index) => (
+              <label key={index} className="text-xs text-neutral-500" htmlFor={`header-${index}`}>
+                第 {index + 1} 列：{name === '' ? `column_${index + 1}` : name}
+                <input
+                  id={`header-${index}`}
+                  type="text"
+                  className="text-input mt-1 w-32 font-sans"
+                  value={headerNames[index] ?? ''}
+                  placeholder={name === '' ? `column_${index + 1}` : name}
+                  onChange={(event) =>
+                    setHeaderNames((prev) => ({ ...prev, [index]: event.target.value }))
+                  }
+                />
+              </label>
+            ))}
+          </div>
+        )}
+
         <label className="block text-sm text-neutral-700" htmlFor="jsoncsv-input">
           {direction === 'json2csv' ? '输入 JSON（对象数组）' : '输入 CSV（首行为表头）'}
         </label>
@@ -82,29 +153,15 @@ export default function JsonCsv() {
           rows={8}
           className="text-input"
           value={input}
-          onChange={(event) => setInput(event.target.value)}
+          onChange={(event) => handleTextChange(event.target.value)}
         />
-
-        <div className="flex gap-2">
-          <button
-            type="button"
-            className="btn-primary"
-            onClick={run}
-            disabled={input.trim() === ''}
-          >
-            转换
-          </button>
-          <button type="button" className="btn-secondary" onClick={switchDirection}>
-            切换方向（用结果继续）
-          </button>
-        </div>
 
         {error && <p className="error-text">{error}</p>}
 
         {output !== '' && (
           <div className="space-y-2">
             <div className="flex items-center justify-between">
-              <label className="text-sm text-neutral-700" htmlFor="jsoncsv-output">
+              <label className="block text-sm text-neutral-700" htmlFor="jsoncsv-output">
                 结果
               </label>
               <CopyButton value={output} />

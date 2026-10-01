@@ -65,8 +65,7 @@ function cellOf(value: unknown): string {
   return String(value);
 }
 
-/** JSON（对象数组）→ CSV；键按首次出现顺序合并 */
-export function jsonToCsv(input: string): string {
+function collectRecords(input: string): Record<string, unknown>[] {
   let data: unknown;
   try {
     data = JSON.parse(input);
@@ -83,13 +82,44 @@ export function jsonToCsv(input: string): string {
   ) {
     throw new Error('JSON 需要是由对象组成的数组，例如 [{"name":"茉莉"}]');
   }
+  return records;
+}
 
-  const keys: string[] = [];
+/** 解析 JSON 的列名（按首次出现顺序）；输入非法时返回 null，供 UI 实时提示 */
+export function getJsonKeys(input: string): string[] | null {
+  try {
+    const records = collectRecords(input);
+    const keys: string[] = [];
+    for (const record of records) {
+      for (const key of Object.keys(record)) {
+        if (!keys.includes(key)) keys.push(key);
+      }
+    }
+    return keys;
+  } catch {
+    return null;
+  }
+}
+
+export interface JsonToCsvOptions {
+  /** 只导出指定列（按给出顺序）；缺省导出全部列 */
+  includeKeys?: string[];
+}
+
+/** JSON（对象数组）→ CSV；键按首次出现顺序合并，可用 includeKeys 选择/排序列 */
+export function jsonToCsv(input: string, options: JsonToCsvOptions = {}): string {
+  const records = collectRecords(input);
+  const allKeys: string[] = [];
   for (const record of records) {
     for (const key of Object.keys(record)) {
-      if (!keys.includes(key)) keys.push(key);
+      if (!allKeys.includes(key)) allKeys.push(key);
     }
   }
+  const keys =
+    options.includeKeys === undefined
+      ? allKeys
+      : options.includeKeys.filter((key) => allKeys.includes(key));
+  if (keys.length === 0) throw new Error('请至少选择一列');
   const lines = [keys.map((key) => escapeCell(key)).join(',')];
   for (const record of records) {
     lines.push(keys.map((key) => escapeCell(cellOf(record[key]))).join(','));
@@ -101,6 +131,14 @@ const NUMERIC_PATTERN = /^-?(0|[1-9]\d*)(\.\d+)?([eE][+-]?\d+)?$/;
 
 export interface CsvToJsonOptions {
   convertNumbers?: boolean;
+  /** 按列位置重命名表头；缺省的位置沿用原表头 */
+  headerNames?: Record<number, string>;
+}
+
+/** 提取 CSV 表头；输入为空时返回 null，供 UI 实时提示 */
+export function getCsvHeader(input: string): string[] | null {
+  const rows = parseCsv(input);
+  return rows.length > 0 ? rows[0] : null;
 }
 
 /** CSV → JSON（对象数组，2 空格缩进） */
@@ -113,7 +151,13 @@ export function csvToJson(input: string, options: CsvToJsonOptions = {}): string
   const records = body.map((row) => {
     const record: Record<string, unknown> = {};
     header.forEach((key, columnIndex) => {
-      const name = key === '' ? `column_${columnIndex + 1}` : key;
+      const renamed = options.headerNames?.[columnIndex];
+      const name =
+        renamed !== undefined && renamed.trim() !== ''
+          ? renamed.trim()
+          : key === ''
+            ? `column_${columnIndex + 1}`
+            : key;
       const raw = row[columnIndex] ?? '';
       record[name] = options.convertNumbers && NUMERIC_PATTERN.test(raw) ? Number(raw) : raw;
     });
