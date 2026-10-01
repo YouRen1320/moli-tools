@@ -145,9 +145,26 @@ export default function JsonCsv() {
           </div>
         )}
 
-        <label className="block text-sm text-neutral-700" htmlFor="jsoncsv-input">
-          {direction === 'json2csv' ? '输入 JSON（对象数组）' : '输入 CSV（首行为表头）'}
-        </label>
+        <div className="flex items-center justify-between">
+          <label className="block text-sm text-neutral-700" htmlFor="jsoncsv-input">
+            {direction === 'json2csv' ? '输入 JSON（对象数组）' : '输入 CSV（首行为表头）'}
+          </label>
+          <label className="btn-secondary cursor-pointer text-xs">
+            📂 从文件导入
+            <input
+              type="file"
+              className="hidden"
+              accept={
+                direction === 'json2csv' ? '.json,application/json' : '.csv,text/csv,text/plain'
+              }
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                if (file) void file.text().then(handleTextChange);
+                event.target.value = '';
+              }}
+            />
+          </label>
+        </div>
         <textarea
           id="jsoncsv-input"
           rows={8}

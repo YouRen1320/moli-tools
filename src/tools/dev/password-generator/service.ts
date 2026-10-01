@@ -87,6 +87,8 @@ export const HISTORY_KEY = 'youren-password-history';
 export const HISTORY_LIMIT = 10;
 
 export interface HistoryEntry {
+  /** 唯一标识（同毫秒内可能生成多条，时间戳不能当 ID 用） */
+  id: string;
   password: string;
   /** 生成时间戳（毫秒） */
   time: number;
@@ -97,6 +99,7 @@ function isHistoryEntry(value: unknown): value is HistoryEntry {
   if (typeof value !== 'object' || value === null) return false;
   const entry = value as Record<string, unknown>;
   return (
+    typeof entry.id === 'string' &&
     typeof entry.password === 'string' &&
     typeof entry.time === 'number' &&
     typeof entry.options === 'object' &&
@@ -117,13 +120,24 @@ export function loadHistory(): HistoryEntry[] {
   }
 }
 
+function newId(): string {
+  return (
+    globalThis.crypto?.randomUUID?.() ?? `p${Date.now()}-${Math.random().toString(36).slice(2)}`
+  );
+}
+
 /** 前插一条历史（相同密码移到最前），超出上限裁剪；返回新列表 */
 export function saveToHistory(
   password: string,
   options: PasswordOptions,
   existing: HistoryEntry[] = loadHistory(),
 ): HistoryEntry[] {
-  const entry: HistoryEntry = { password, time: Date.now(), options: { ...options } };
+  const entry: HistoryEntry = {
+    id: newId(),
+    password,
+    time: Date.now(),
+    options: { ...options },
+  };
   const history = [entry, ...existing.filter((item) => item.password !== password)].slice(
     0,
     HISTORY_LIMIT,
@@ -142,4 +156,18 @@ export function clearHistory(): void {
   } catch {
     /* 忽略 */
   }
+}
+
+/** 按唯一标识删除单条历史；返回新列表 */
+export function removeFromHistory(
+  id: string,
+  existing: HistoryEntry[] = loadHistory(),
+): HistoryEntry[] {
+  const history = existing.filter((entry) => entry.id !== id);
+  try {
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history));
+  } catch {
+    /* 忽略 */
+  }
+  return history;
 }

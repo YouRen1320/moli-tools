@@ -5,6 +5,7 @@ import {
   generatePassword,
   HISTORY_KEY,
   loadHistory,
+  removeFromHistory,
   saveToHistory,
   strengthLabel,
   LIMITS,
@@ -120,5 +121,26 @@ describe('生成历史（localStorage）', () => {
     expect(loadHistory()).toEqual([]);
     localStorage.setItem(HISTORY_KEY, '["不是历史对象"]');
     expect(loadHistory()).toEqual([]);
+  });
+});
+
+describe('removeFromHistory（v1.4.0）', () => {
+  it('按 id 删除指定条目并持久化（同毫秒多条互不影响）', () => {
+    const options = { length: LIMITS.minLength, uppercase: false, digits: false, symbols: false };
+    // 连续生成（同一毫秒），验证 id 唯一性
+    saveToHistory(generatePassword(options), options);
+    const second = saveToHistory(generatePassword(options), options);
+    const list = removeFromHistory(second[0].id);
+    expect(list).toHaveLength(1);
+    expect(list[0].id).toBe(second[1].id);
+    expect(loadHistory()).toEqual(list);
+  });
+
+  it('id 不存在时列表不变', () => {
+    const options = { length: LIMITS.minLength, uppercase: false, digits: false, symbols: false };
+    saveToHistory(generatePassword(options), options);
+    const before = loadHistory();
+    const list = removeFromHistory('no-such-id');
+    expect(list).toEqual(before);
   });
 });
