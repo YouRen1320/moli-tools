@@ -19,6 +19,23 @@ const { title, description = '所有工具均在浏览器本地运行，文件�
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- 首帧前确定昼夜主题，避免闪烁；默认跟随系统，用户选择持久化 -->
+    <script is:inline>
+      (() => {
+        try {
+          const saved = localStorage.getItem('youren-theme');
+          const theme =
+            saved === 'night' || saved === 'dusk'
+              ? saved
+              : matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'night'
+                : 'dusk';
+          document.documentElement.dataset.theme = theme;
+        } catch {
+          document.documentElement.dataset.theme = 'dusk';
+        }
+      })();
+    </script>
     <meta name="description" content={description} />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#6d5ae0" />
@@ -49,6 +66,14 @@ const { title, description = '所有工具均在浏览器本地运行，文件�
           >
             GitHub
           </a>
+          <button
+            id="theme-toggle"
+            type="button"
+            aria-label="切换昼夜模式"
+            class="flex h-8 w-8 items-center justify-center rounded-full border border-white/50 bg-white/50 text-base transition hover:bg-white/80"
+          >
+            🌙
+          </button>
         </nav>
       </div>
     </header>
@@ -72,6 +97,24 @@ const { title, description = '所有工具均在浏览器本地运行，文件�
           });
         });
       }
+    </script>
+    <script is:inline>
+      (() => {
+        const toggle = document.getElementById('theme-toggle');
+        if (!toggle) return;
+        const iconFor = (theme) => (theme === 'night' ? '☀️' : '🌙');
+        toggle.textContent = iconFor(document.documentElement.dataset.theme);
+        toggle.addEventListener('click', () => {
+          const next = document.documentElement.dataset.theme === 'night' ? 'dusk' : 'night';
+          document.documentElement.dataset.theme = next;
+          try {
+            localStorage.setItem('youren-theme', next);
+          } catch {
+            /* 隐私模式下忽略 */
+          }
+          toggle.textContent = iconFor(next);
+        });
+      })();
     </script>
   </body>
 </html>

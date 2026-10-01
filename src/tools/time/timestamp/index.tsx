@@ -13,7 +13,7 @@ function UnitSwitch({ unit, onChange }: { unit: TimeUnit; onChange: (u: TimeUnit
           onClick={() => onChange(value)}
           className={`px-3 py-1.5 transition ${
             unit === value
-              ? 'bg-brand-600 text-white'
+              ? 'bg-dusk-violet text-white'
               : 'bg-white text-neutral-700 hover:bg-neutral-50'
           }`}
         >

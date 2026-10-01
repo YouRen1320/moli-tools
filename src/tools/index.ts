@@ -10,6 +10,8 @@ import { tool as timestamp } from './time/timestamp/meta';
 import { tool as qrcode } from './generate/qrcode/meta';
 import { tool as colorConvert } from './design/color-convert/meta';
 import { tool as hashCalc } from './dev/hash-calc/meta';
+import { tool as passwordGenerator } from './dev/password-generator/meta';
+import { tool as uuidGenerator } from './dev/uuid-generator/meta';
 import { tool as pdfToImage } from './pdf/pdf-to-image/meta';
 
 export const allTools: ToolMeta[] = [
@@ -25,6 +27,8 @@ export const allTools: ToolMeta[] = [
   qrcode,
   colorConvert,
   hashCalc,
+  passwordGenerator,
+  uuidGenerator,
 ];
 
 const seenSlugs = new Set<string>();

@@ -42,7 +42,7 @@ export default function Base64Tool() {
               onClick={() => setMode(value)}
               className={`rounded-lg px-4 py-2 text-sm font-medium transition ${
                 mode === value
-                  ? 'bg-brand-600 text-white'
+                  ? 'bg-dusk-violet text-white'
                   : 'border border-neutral-300 bg-white text-neutral-700 hover:border-neutral-400'
               }`}
             >

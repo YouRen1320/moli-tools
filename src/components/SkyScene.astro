@@ -1,7 +1,8 @@
 ---
 /**
- * 原创的黄昏天空矢量插画（新海诚风格致敬，不含任何第三方版权素材）。
- * 星星位置由固定种子生成，保证每次构建结果一致。
+ * 原创的天空矢量插画（新海诚风格致敬，不含任何第三方版权素材）。
+ * 黄昏与夜晚两个场景，由 html[data-theme] 切换；星星位置由固定种子生成，
+ * 保证每次构建结果一致。
  */
 function mulberry32(seed: number): () => number {
   return function () {
@@ -13,25 +14,45 @@ function mulberry32(seed: number): () => number {
   };
 }
 
-const rand = mulberry32(20261001);
+const duskRand = mulberry32(20261001);
 const stars = Array.from({ length: 46 }, () => {
-  const r = Number((0.6 + rand() * 1.5).toFixed(2));
+  const r = Number((0.6 + duskRand() * 1.5).toFixed(2));
   return {
-    cx: Math.round(rand() * 1440),
-    cy: Math.round(rand() * 360),
+    cx: Math.round(duskRand() * 1440),
+    cy: Math.round(duskRand() * 360),
     r,
-    opacity: Number((0.3 + rand() * 0.6).toFixed(2)),
-    delay: Number((rand() * 4).toFixed(2)),
+    opacity: Number((0.3 + duskRand() * 0.6).toFixed(2)),
+    delay: Number((duskRand() * 4).toFixed(2)),
     // 大星星才闪烁，其余保持静谧
     twinkles: r > 1.2,
   };
 });
 
 const sparkles = Array.from({ length: 6 }, () => ({
-  cx: Math.round(rand() * 1440),
-  cy: Math.round(120 + rand() * 420),
-  r: Number((2 + rand() * 1.6).toFixed(2)),
-  delay: Number((rand() * 5).toFixed(2)),
+  cx: Math.round(duskRand() * 1440),
+  cy: Math.round(120 + duskRand() * 420),
+  r: Number((2 + duskRand() * 1.6).toFixed(2)),
+  delay: Number((duskRand() * 5).toFixed(2)),
+}));
+
+const nightRand = mulberry32(20261002);
+const nightStars = Array.from({ length: 90 }, () => {
+  const r = Number((0.5 + nightRand() * 1.7).toFixed(2));
+  return {
+    cx: Math.round(nightRand() * 1440),
+    cy: Math.round(nightRand() * 520),
+    r,
+    opacity: Number((0.3 + nightRand() * 0.7).toFixed(2)),
+    delay: Number((nightRand() * 4).toFixed(2)),
+    twinkles: r > 1.1,
+  };
+});
+
+const fireflies = Array.from({ length: 8 }, () => ({
+  cx: Math.round(nightRand() * 1440),
+  cy: Math.round(560 + nightRand() * 260),
+  r: Number((1.6 + nightRand() * 1.4).toFixed(2)),
+  delay: Number((nightRand() * 6).toFixed(2)),
 }));
 ---
 
@@ -39,124 +60,177 @@ const sparkles = Array.from({ length: 6 }, () => ({
   <svg viewBox="0 0 1440 900" preserveAspectRatio="xMidYMid slice" role="presentation">
     <defs>
       <linearGradient id="sky-gradient" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0" stop-color="#14143a" />
-        <stop offset="0.16" stop-color="#23235f" />
-        <stop offset="0.34" stop-color="#4b3f8f" />
-        <stop offset="0.52" stop-color="#8a55a8" />
-        <stop offset="0.68" stop-color="#d3699b" />
-        <stop offset="0.8" stop-color="#ff8a5c" />
-        <stop offset="0.92" stop-color="#ffc086" />
-        <stop offset="1" stop-color="#ffe3b0" />
+        <stop offset="0" stop-color="#14143a"></stop>
+        <stop offset="0.16" stop-color="#23235f"></stop>
+        <stop offset="0.34" stop-color="#4b3f8f"></stop>
+        <stop offset="0.52" stop-color="#8a55a8"></stop>
+        <stop offset="0.68" stop-color="#d3699b"></stop>
+        <stop offset="0.8" stop-color="#ff8a5c"></stop>
+        <stop offset="0.92" stop-color="#ffc086"></stop>
+        <stop offset="1" stop-color="#ffe3b0"></stop>
+      </linearGradient>
+      <linearGradient id="sky-gradient-night" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="#030312"></stop>
+        <stop offset="0.3" stop-color="#0b0b28"></stop>
+        <stop offset="0.62" stop-color="#171744"></stop>
+        <stop offset="0.85" stop-color="#242466"></stop>
+        <stop offset="1" stop-color="#32327a"></stop>
       </linearGradient>
       <radialGradient id="sun-glow" cx="0.5" cy="0.5" r="0.5">
-        <stop offset="0" stop-color="#fff3cf" stop-opacity="0.95" />
-        <stop offset="0.4" stop-color="#ffd9a1" stop-opacity="0.45" />
-        <stop offset="1" stop-color="#ffb27a" stop-opacity="0" />
+        <stop offset="0" stop-color="#fff3cf" stop-opacity="0.95"></stop>
+        <stop offset="0.4" stop-color="#ffd9a1" stop-opacity="0.45"></stop>
+        <stop offset="1" stop-color="#ffb27a" stop-opacity="0"></stop>
       </radialGradient>
+      <radialGradient id="moon-glow" cx="0.5" cy="0.5" r="0.5">
+        <stop offset="0" stop-color="#eef2ff" stop-opacity="0.5"></stop>
+        <stop offset="0.45" stop-color="#c7d2fe" stop-opacity="0.18"></stop>
+        <stop offset="1" stop-color="#a5b4fc" stop-opacity="0"></stop>
+      </radialGradient>
+      <mask id="moon-mask">
+        <rect x="0" y="0" width="1440" height="900" fill="#ffffff"></rect>
+        <circle cx="1132" cy="216" r="44" fill="#000000"></circle>
+      </mask>
       <filter id="cloud-soft" x="-30%" y="-60%" width="160%" height="220%">
-        <feGaussianBlur stdDeviation="4" />
+        <feGaussianBlur stdDeviation="4"></feGaussianBlur>
       </filter>
       <filter id="cloud-softer" x="-30%" y="-60%" width="160%" height="220%">
-        <feGaussianBlur stdDeviation="7" />
+        <feGaussianBlur stdDeviation="7"></feGaussianBlur>
       </filter>
       <filter id="streak-soft" x="-40%" y="-400%" width="180%" height="900%">
-        <feGaussianBlur stdDeviation="6" />
+        <feGaussianBlur stdDeviation="6"></feGaussianBlur>
       </filter>
     </defs>
 
-    <rect width="1440" height="900" fill="url(#sky-gradient)" />
-
-    <!-- 星空 -->
-    {stars.map((star) => (
-      <circle
-        cx={star.cx}
-        cy={star.cy}
-        r={star.r}
+    <!-- 黄昏场景 -->
+    <g class="sky-dusk">
+      <rect width="1440" height="900" fill="url(#sky-gradient)"></rect>
+      {stars.map((star) => (
+        <circle
+          cx={star.cx}
+          cy={star.cy}
+          r={star.r}
+          fill="#ffffff"
+          opacity={star.opacity}
+          class={star.twinkles ? 'star' : undefined}
+          style={star.twinkles ? `animation-delay:${star.delay}s` : undefined}
+        />
+      ))}
+      {sparkles.map((sparkle) => (
+        <circle
+          cx={sparkle.cx}
+          cy={sparkle.cy}
+          r={sparkle.r}
+          fill="#fff7e6"
+          class="sparkle"
+          style={`animation-delay:${sparkle.delay}s`}
+        />
+      ))}
+      <ellipse
+        cx="500"
+        cy="300"
+        rx="430"
+        ry="14"
+        fill="#e8b6d9"
+        opacity="0.28"
+        filter="url(#streak-soft)"
+      />
+      <ellipse
+        cx="980"
+        cy="240"
+        rx="300"
+        ry="10"
+        fill="#d9a9e8"
+        opacity="0.22"
+        filter="url(#streak-soft)"
+      />
+      <circle cx="1010" cy="680" r="230" fill="url(#sun-glow)"></circle>
+      <circle cx="1010" cy="680" r="36" fill="#fff3cf"></circle>
+      <circle cx="1010" cy="680" r="22" fill="#fffbe8"></circle>
+      <g class="cloud-a" filter="url(#cloud-soft)" opacity="0.85">
+        <ellipse cx="300" cy="545" rx="135" ry="26" fill="#ffffff"></ellipse>
+        <ellipse cx="375" cy="528" rx="90" ry="30" fill="#ffffff"></ellipse>
+        <ellipse cx="235" cy="532" rx="70" ry="20" fill="#ffe9f3"></ellipse>
+      </g>
+      <g class="cloud-b" filter="url(#cloud-soft)" opacity="0.8">
+        <ellipse cx="700" cy="615" rx="150" ry="24" fill="#ffd9e8"></ellipse>
+        <ellipse cx="790" cy="596" rx="95" ry="28" fill="#ffe9f3"></ellipse>
+        <ellipse cx="620" cy="600" rx="80" ry="18" fill="#ffffff"></ellipse>
+      </g>
+      <g class="cloud-c" filter="url(#cloud-softer)" opacity="0.7">
+        <ellipse cx="1180" cy="765" rx="160" ry="22" fill="#ffe4c9"></ellipse>
+        <ellipse cx="1265" cy="748" rx="100" ry="24" fill="#ffd9c4"></ellipse>
+      </g>
+      <g class="cloud-d" filter="url(#cloud-soft)" opacity="0.65">
+        <ellipse cx="185" cy="730" rx="120" ry="20" fill="#ffd9e8"></ellipse>
+        <ellipse cx="255" cy="714" rx="70" ry="18" fill="#ffffff"></ellipse>
+      </g>
+      <ellipse
+        cx="560"
+        cy="250"
+        rx="300"
+        ry="9"
         fill="#ffffff"
-        opacity={star.opacity}
-        class={star.twinkles ? 'star' : undefined}
-        style={star.twinkles ? `animation-delay:${star.delay}s` : undefined}
+        opacity="0.16"
+        filter="url(#streak-soft)"
+        transform="rotate(-14 560 250)"
       />
-    ))}
-
-    <!-- 闪光的光点 -->
-    {sparkles.map((sparkle) => (
-      <circle
-        cx={sparkle.cx}
-        cy={sparkle.cy}
-        r={sparkle.r}
-        fill="#fff7e6"
-        class="sparkle"
-        style={`animation-delay:${sparkle.delay}s`}
+      <ellipse
+        cx="780"
+        cy="335"
+        rx="220"
+        ry="6"
+        fill="#ffffff"
+        opacity="0.11"
+        filter="url(#streak-soft)"
+        transform="rotate(-10 780 335)"
       />
-    ))}
-
-    <!-- 高空的薄云带 -->
-    <ellipse
-      cx="500"
-      cy="300"
-      rx="430"
-      ry="14"
-      fill="#e8b6d9"
-      opacity="0.28"
-      filter="url(#streak-soft)"
-    />
-    <ellipse
-      cx="980"
-      cy="240"
-      rx="300"
-      ry="10"
-      fill="#d9a9e8"
-      opacity="0.22"
-      filter="url(#streak-soft)"
-    />
-
-    <!-- 落日与光晕 -->
-    <circle cx="1010" cy="680" r="230" fill="url(#sun-glow)" />
-    <circle cx="1010" cy="680" r="36" fill="#fff3cf" />
-    <circle cx="1010" cy="680" r="22" fill="#fffbe8" />
-
-    <!-- 体积云 -->
-    <g class="cloud-a" filter="url(#cloud-soft)" opacity="0.85">
-      <ellipse cx="300" cy="545" rx="135" ry="26" fill="#ffffff" />
-      <ellipse cx="375" cy="528" rx="90" ry="30" fill="#ffffff" />
-      <ellipse cx="235" cy="532" rx="70" ry="20" fill="#ffe9f3" />
-    </g>
-    <g class="cloud-b" filter="url(#cloud-soft)" opacity="0.8">
-      <ellipse cx="700" cy="615" rx="150" ry="24" fill="#ffd9e8" />
-      <ellipse cx="790" cy="596" rx="95" ry="28" fill="#ffe9f3" />
-      <ellipse cx="620" cy="600" rx="80" ry="18" fill="#ffffff" />
-    </g>
-    <g class="cloud-c" filter="url(#cloud-softer)" opacity="0.7">
-      <ellipse cx="1180" cy="765" rx="160" ry="22" fill="#ffe4c9" />
-      <ellipse cx="1265" cy="748" rx="100" ry="24" fill="#ffd9c4" />
-    </g>
-    <g class="cloud-d" filter="url(#cloud-soft)" opacity="0.65">
-      <ellipse cx="185" cy="730" rx="120" ry="20" fill="#ffd9e8" />
-      <ellipse cx="255" cy="714" rx="70" ry="18" fill="#ffffff" />
     </g>
 
-    <!-- 镜头光斑 -->
-    <ellipse
-      cx="560"
-      cy="250"
-      rx="300"
-      ry="9"
-      fill="#ffffff"
-      opacity="0.16"
-      filter="url(#streak-soft)"
-      transform="rotate(-14 560 250)"
-    />
-    <ellipse
-      cx="780"
-      cy="335"
-      rx="220"
-      ry="6"
-      fill="#ffffff"
-      opacity="0.11"
-      filter="url(#streak-soft)"
-      transform="rotate(-10 780 335)"
-    />
+    <!-- 夜晚场景 -->
+    <g class="sky-night">
+      <rect width="1440" height="900" fill="url(#sky-gradient-night)"></rect>
+      {nightStars.map((star) => (
+        <circle
+          cx={star.cx}
+          cy={star.cy}
+          r={star.r}
+          fill="#e8ecff"
+          opacity={star.opacity}
+          class={star.twinkles ? 'star' : undefined}
+          style={star.twinkles ? `animation-delay:${star.delay}s` : undefined}
+        />
+      ))}
+      <circle cx="1088" cy="260" r="150" fill="url(#moon-glow)"></circle>
+      <circle cx="1088" cy="260" r="44" fill="#f2efdd" mask="url(#moon-mask)"></circle>
+      {fireflies.map((firefly) => (
+        <circle
+          cx={firefly.cx}
+          cy={firefly.cy}
+          r={firefly.r}
+          fill="#d9f99d"
+          class="firefly"
+          style={`animation-delay:${firefly.delay}s`}
+        />
+      ))}
+      <g class="cloud-a" filter="url(#cloud-softer)" opacity="0.5">
+        <ellipse cx="380" cy="600" rx="150" ry="24" fill="#262650"></ellipse>
+        <ellipse cx="460" cy="584" rx="90" ry="26" fill="#2e2e5c"></ellipse>
+      </g>
+      <g class="cloud-c" filter="url(#cloud-softer)" opacity="0.45">
+        <ellipse cx="1150" cy="740" rx="170" ry="24" fill="#22224e"></ellipse>
+        <ellipse cx="1240" cy="724" rx="100" ry="20" fill="#2e2e5c"></ellipse>
+      </g>
+      <ellipse
+        cx="700"
+        cy="180"
+        rx="320"
+        ry="8"
+        fill="#a5b4fc"
+        opacity="0.1"
+        filter="url(#streak-soft)"
+        transform="rotate(-12 700 180)"
+      />
+    </g>
   </svg>
 </div>
 
@@ -171,6 +245,15 @@ const sparkles = Array.from({ length: 6 }, () => ({
     width: 100%;
     height: 100%;
   }
+  .sky-night {
+    display: none;
+  }
+  :global(html[data-theme='night']) .sky-dusk {
+    display: none;
+  }
+  :global(html[data-theme='night']) .sky-night {
+    display: block;
+  }
   .star {
     animation: twinkle 3.2s ease-in-out infinite;
   }
@@ -178,6 +261,11 @@ const sparkles = Array.from({ length: 6 }, () => ({
     transform-box: fill-box;
     transform-origin: center;
     animation: pulse 4.5s ease-in-out infinite;
+  }
+  .firefly {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: firefly 5.5s ease-in-out infinite;
   }
   .cloud-a {
     animation: drift-a 70s ease-in-out infinite alternate;
@@ -209,6 +297,17 @@ const sparkles = Array.from({ length: 6 }, () => ({
     50% {
       opacity: 1;
       transform: scale(1.6);
+    }
+  }
+  @keyframes firefly {
+    0%,
+    100% {
+      opacity: 0.15;
+      transform: translate(0, 0);
+    }
+    50% {
+      opacity: 0.95;
+      transform: translate(14px, -10px);
     }
   }
   @keyframes drift-a {

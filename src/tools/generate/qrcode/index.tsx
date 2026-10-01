@@ -57,7 +57,7 @@ export default function Qrcode() {
                 min={128}
                 max={640}
                 step={32}
-                className="mt-1 block w-40 accent-brand-600"
+                className="mt-1 block w-40 accent-dusk-violet"
                 value={width}
                 onChange={(event) => setWidth(Number(event.target.value))}
               />
@@ -103,7 +103,7 @@ export default function Qrcode() {
                 className="mx-auto rounded-lg"
                 width={width > 320 ? 320 : width}
               />
-              <p className="mt-2 text-xs text-neutral-400 group-hover:text-brand-600">
+              <p className="mt-2 text-xs text-neutral-400 group-hover:text-dusk-violet">
                 点击下载 PNG
               </p>
             </a>
