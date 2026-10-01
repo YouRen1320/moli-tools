@@ -6,6 +6,7 @@ import {
   generatePassword,
   entropyBits,
   loadHistory,
+  removeFromHistory,
   saveToHistory,
   strengthLabel,
   LIMITS,
@@ -50,6 +51,10 @@ export default function PasswordGenerator() {
   const wipeHistory = () => {
     clearHistory();
     setHistory([]);
+  };
+
+  const removeEntry = (id: string) => {
+    setHistory(removeFromHistory(id));
   };
 
   const toggles = [
@@ -130,7 +135,7 @@ export default function PasswordGenerator() {
             </p>
             <ol className="space-y-2">
               {history.map((entry) => (
-                <li key={entry.time} className="card flex items-center justify-between gap-3 py-2">
+                <li key={entry.id} className="card flex items-center justify-between gap-3 py-2">
                   <span className="min-w-0 flex-1">
                     <code className="block truncate text-sm">{entry.password}</code>
                     <span className="text-xs text-neutral-500">
@@ -138,7 +143,17 @@ export default function PasswordGenerator() {
                       {entry.password.length} 位
                     </span>
                   </span>
-                  <CopyButton value={entry.password} label="复制" />
+                  <span className="flex shrink-0 gap-1">
+                    <CopyButton value={entry.password} label="复制" />
+                    <button
+                      type="button"
+                      aria-label="删除这条记录"
+                      className="btn-secondary px-2 py-1"
+                      onClick={() => removeEntry(entry.id)}
+                    >
+                      删除
+                    </button>
+                  </span>
                 </li>
               ))}
             </ol>
