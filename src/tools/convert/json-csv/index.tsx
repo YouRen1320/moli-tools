@@ -6,6 +6,7 @@ import {
   getCsvHeader,
   getJsonKeys,
   jsonToCsv,
+  sniffDelimiter,
   DELIMITERS,
   type Delimiter,
 } from './service';
@@ -30,10 +31,12 @@ export default function JsonCsv() {
   // CSV→JSON 的表头重命名：按列位置记录新名
   const [headerNames, setHeaderNames] = useState<Record<number, string>>({});
   const [committedInput, setCommittedInput] = useState<string | null>(null);
-  const [delimiter, setDelimiter] = useState<Delimiter>(',');
+  // 手动选择优先；缺省从输入首行自动嗅探分隔符
+  const [delimiterOverride, setDelimiterOverride] = useState<Delimiter | null>(null);
 
   // 全部渲染期派生，无副作用。超大输入退出实时模式：
   // live = 派生自当前输入；非 live = 派生自最近一次"转换"确认的内容
+  const delimiter = delimiterOverride ?? sniffDelimiter(input);
   const isLive = input.length <= LIVE_LIMIT;
   const source = isLive ? input : (committedInput ?? '');
   const jsonKeys = direction === 'json2csv' ? getJsonKeys(source) : null;
@@ -66,6 +69,7 @@ export default function JsonCsv() {
     setIncludeKeys(null);
     setHeaderNames({});
     setCommittedInput(null);
+    setDelimiterOverride(null);
   };
 
   const toggleKey = (key: string) => {
@@ -125,7 +129,7 @@ export default function JsonCsv() {
               id="delimiter-select"
               className="rounded-lg border border-neutral-300 bg-white/70 px-2 py-1.5 text-sm"
               value={delimiter}
-              onChange={(event) => setDelimiter(event.target.value as Delimiter)}
+              onChange={(event) => setDelimiterOverride(event.target.value as Delimiter)}
             >
               {DELIMITERS.map((item) => (
                 <option key={item.value} value={item.value}>
