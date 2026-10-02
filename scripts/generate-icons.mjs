@@ -66,7 +66,7 @@ function ogSvg() {
   <circle cx="1060" cy="110" r="8" fill="#ffffff" opacity="0.9" />
   <circle cx="180" cy="520" r="6" fill="#ffffff" opacity="0.7" />
   <text x="120" y="345" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="104" font-weight="700" fill="#ffffff">YouRen工具箱</text>
-  <text x="124" y="425" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="36" fill="#ffffff" opacity="0.92">21 个纯浏览器本地处理的在线工具，文件不上传服务器</text>
+  <text x="124" y="425" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="36" fill="#ffffff" opacity="0.92">纯浏览器本地处理 · 文件不上传服务器 · 支持离线使用</text>
   <text x="124" y="486" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="28" fill="#ffffff" opacity="0.75">youren1320.github.io/youren-tools</text>
 </svg>`;
 }
