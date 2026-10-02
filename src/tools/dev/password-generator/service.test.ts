@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   clearHistory,
+  optionsSummary,
   entropyBits,
   generatePassword,
   HISTORY_KEY,
@@ -142,5 +143,16 @@ describe('removeFromHistory（v1.4.0）', () => {
     const before = loadHistory();
     const list = removeFromHistory('no-such-id');
     expect(list).toEqual(before);
+  });
+});
+
+describe('optionsSummary（v1.13.0）', () => {
+  it('按启用项拼接字符集摘要', () => {
+    expect(optionsSummary({ length: 16, uppercase: true, digits: true, symbols: true })).toBe(
+      '小写+大写+数字+符号',
+    );
+    expect(optionsSummary({ length: 16, uppercase: false, digits: false, symbols: false })).toBe(
+      '小写',
+    );
   });
 });

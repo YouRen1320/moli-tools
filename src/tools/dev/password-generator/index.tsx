@@ -7,6 +7,7 @@ import {
   generatePassword,
   entropyBits,
   loadHistory,
+  optionsSummary,
   removeFromHistory,
   saveToHistory,
   strengthLabel,
@@ -140,7 +141,8 @@ export default function PasswordGenerator() {
                   <span className="min-w-0 flex-1">
                     <code className="block truncate text-sm">{entry.password}</code>
                     <span className="text-xs text-neutral-500">
-                      {formatDateTime(new Date(entry.time))} · {entry.password.length} 位
+                      {formatDateTime(new Date(entry.time))} · {entry.password.length} 位 ·{' '}
+                      {optionsSummary(entry.options)}
                     </span>
                   </span>
                   <span className="flex shrink-0 gap-1">
