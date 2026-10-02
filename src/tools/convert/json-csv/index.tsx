@@ -251,7 +251,7 @@ export default function JsonCsv() {
                       new Blob([output], {
                         type: direction === 'json2csv' ? 'text/csv' : 'application/json',
                       }),
-                      `export-${formatFileStamp()}.${direction === 'json2csv' ? 'csv' : 'json'}`,
+                      `json-csv-export-${formatFileStamp()}.${direction === 'json2csv' ? 'csv' : 'json'}`,
                     )
                   }
                 >
