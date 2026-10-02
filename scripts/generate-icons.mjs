@@ -55,3 +55,21 @@ for (const target of targets) {
   await writeFile(target.file, png);
   console.log(`已生成 ${target.file}（${png.length} 字节）`);
 }
+
+// OG 分享图 1200x630（社交媒体链接卡片）
+function ogSvg() {
+  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  ${GRADIENT_DEFS}
+  <rect width="1200" height="630" fill="url(#dusk)" />
+  <circle cx="980" cy="470" r="150" fill="#ffffff" opacity="0.08" />
+  <path d="${STAR(120, 130, 52)}" fill="#ffffff" />
+  <circle cx="1060" cy="110" r="8" fill="#ffffff" opacity="0.9" />
+  <circle cx="180" cy="520" r="6" fill="#ffffff" opacity="0.7" />
+  <text x="120" y="345" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="104" font-weight="700" fill="#ffffff">YouRen工具箱</text>
+  <text x="124" y="425" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="36" fill="#ffffff" opacity="0.92">21 个纯浏览器本地处理的在线工具，文件不上传服务器</text>
+  <text x="124" y="486" font-family="PingFang SC, Microsoft YaHei, sans-serif" font-size="28" fill="#ffffff" opacity="0.75">youren1320.github.io/youren-tools</text>
+</svg>`;
+}
+const ogPng = await sharp(Buffer.from(ogSvg())).png().toBuffer();
+await writeFile('public/og.png', ogPng);
+console.log(`已生成 public/og.png（${ogPng.length} 字节）`);
