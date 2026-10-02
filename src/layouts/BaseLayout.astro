@@ -41,6 +41,14 @@ const { title, description = '所有工具均在浏览器本地运行，文件�
     <meta name="theme-color" content="#6d5ae0" />
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <link rel="manifest" href={`${base}/manifest.webmanifest`} />
+    <meta property="og:title" content={`${title} · ${siteName}`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={new URL(base, Astro.site).href} />
+    <meta property="og:image" content={new URL(`${base}/og.png`, Astro.site).href} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
     <title>{title} · {siteName}</title>
   </head>
   <body class="flex min-h-full flex-col font-sans">
