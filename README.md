@@ -10,7 +10,7 @@
 
 ## 已实现 / 未实现
 
-### ✅ 已实现（v1.9.0）
+### ✅ 已实现（v1.11.0）
 
 | 分类 | 工具          | 说明                                                     |
 | ---- | ------------- | -------------------------------------------------------- |
@@ -39,6 +39,11 @@
 同时已具备：工具注册架构（新增工具零改路由）、服务层与组件测试（110 例）、ESLint + Prettier、类型检查、GitHub Actions CI（安装 → 检查 → 测试 → 构建）、Dependabot 周更、**PWA**（可安装到桌面/手机，Service Worker 本地缓存，离线可用）、**昼夜双主题**（黄昏/星空一键切换，跟随系统偏好）、**GitHub Pages 自动部署**（推送 main 即上线）、sitemap + robots.txt、WCAG AA 级可读性（玻璃面板对比度经工具核查）。
 
 ![黄昏主题](docs/preview-dusk.png)
+
+<p align="center">
+  <img src="docs/preview-jsoncsv.png" alt="JSON ↔ CSV 工具页" width="49%" />
+  <img src="docs/preview-night.png" alt="夜晚主题" width="49%" />
+</p>
 
 ![夜晚主题](docs/preview-night.png)
 

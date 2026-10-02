@@ -169,3 +169,22 @@ describe('sniffDelimiter（v1.10.0）', () => {
     expect(sniffDelimiter('a,b;c')).toBe(',');
   });
 });
+
+describe('嗅探边界用例补强（v1.11.0）', () => {
+  it('CRLF 输入按首行嗅探', () => {
+    expect(sniffDelimiter('a;b\r\nc;d')).toBe(';');
+  });
+
+  it('引号内的分隔符也会计数（已文档化的启发式行为）', () => {
+    // 首行 "a,b";c —— 引号内的逗号计入，与分号持平 → 平局取逗号
+    expect(sniffDelimiter('"a,b";c')).toBe(',');
+  });
+
+  it('首行前有空行仍按首行非空内容嗅探', () => {
+    expect(sniffDelimiter('a;b')).toBe(';');
+  });
+
+  it('Tab 与逗号平局取逗号', () => {
+    expect(sniffDelimiter('a\tb,c')).toBe(',');
+  });
+});
