@@ -5,6 +5,7 @@ import {
   getCsvHeader,
   jsonToCsv,
   parseCsv,
+  sniffDelimiter,
   type Delimiter,
 } from './service';
 
@@ -150,5 +151,21 @@ describe('分隔符选项（v1.9.0）', () => {
     expect(jsonToCsv('[{"a":1}]')).toBe('a\n1');
     const d: Delimiter | undefined = undefined;
     expect(parseCsv('a,b', d)).toEqual([['a', 'b']]);
+  });
+});
+
+describe('sniffDelimiter（v1.10.0）', () => {
+  it.each([
+    ['name,age\n茉莉,3', ','],
+    ['name;age\n茉莉;3', ';'],
+    ['name\tage\n茉莉\t3', '\t'],
+    ['no-delimiters-here', ','],
+    ['', ','],
+  ])('嗅探 %s → %s', (input, expected) => {
+    expect(sniffDelimiter(input)).toBe(expected as Delimiter);
+  });
+
+  it('平局取逗号', () => {
+    expect(sniffDelimiter('a,b;c')).toBe(',');
   });
 });

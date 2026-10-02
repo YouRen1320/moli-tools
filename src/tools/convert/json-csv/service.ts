@@ -1,5 +1,22 @@
 export type Delimiter = ',' | ';' | '\t';
 
+/** 从首行统计各候选分隔符出现次数，取最多（平局取逗号）；
+ * 供 UI 做"自动嗅探"，用户手动选择时以手动为准 */
+export function sniffDelimiter(input: string): Delimiter {
+  const firstLine = input.split(/\r\n|\r|\n/, 1)[0] ?? '';
+  let commas = 0;
+  let semicolons = 0;
+  let tabs = 0;
+  for (const char of firstLine) {
+    if (char === ',') commas += 1;
+    else if (char === ';') semicolons += 1;
+    else if (char === '\t') tabs += 1;
+  }
+  if (semicolons > commas && semicolons > tabs) return ';';
+  if (tabs > commas && tabs > semicolons) return '\t';
+  return ',';
+}
+
 export const DELIMITERS: { value: Delimiter; label: string }[] = [
   { value: ',', label: '逗号 (,)' },
   { value: ';', label: '分号 (;)' },
