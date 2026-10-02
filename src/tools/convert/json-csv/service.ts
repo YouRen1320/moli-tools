@@ -150,8 +150,8 @@ export interface CsvToJsonOptions {
 }
 
 /** 提取 CSV 表头；输入为空时返回 null，供 UI 实时提示 */
-export function getCsvHeader(input: string): string[] | null {
-  const rows = parseCsv(input);
+export function getCsvHeader(input: string, delimiter: Delimiter = ','): string[] | null {
+  const rows = parseCsv(input, delimiter);
   return rows.length > 0 ? rows[0] : null;
 }
 
