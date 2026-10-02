@@ -1,5 +1,13 @@
-/** RFC 4180 状态机解析：支持引号字段、转义引号、字段内换行 */
-export function parseCsv(text: string): string[][] {
+export type Delimiter = ',' | ';' | '\t';
+
+export const DELIMITERS: { value: Delimiter; label: string }[] = [
+  { value: ',', label: '逗号 (,)' },
+  { value: ';', label: '分号 (;)' },
+  { value: '\t', label: 'Tab' },
+];
+
+/** RFC 4180 状态机解析：支持引号字段、转义引号、字段内换行；分隔符可选 */
+export function parseCsv(text: string, delimiter: Delimiter = ','): string[][] {
   const rows: string[][] = [];
   let row: string[] = [];
   let field = '';
@@ -28,7 +36,7 @@ export function parseCsv(text: string): string[][] {
       index += 1;
       continue;
     }
-    if (char === ',') {
+    if (char === delimiter) {
       row.push(field);
       field = '';
       index += 1;
@@ -55,8 +63,9 @@ export function parseCsv(text: string): string[][] {
   return rows.filter((r) => !(r.length === 1 && r[0] === ''));
 }
 
-function escapeCell(cell: string): string {
-  return /[",\n\r]/.test(cell) ? `"${cell.replace(/"/g, '""')}"` : cell;
+function escapeCell(cell: string, delimiter: Delimiter): string {
+  const needsQuotes = /[",\n\r]/.test(cell) || cell.includes(delimiter);
+  return needsQuotes ? `"${cell.replace(/"/g, '""')}"` : cell;
 }
 
 function cellOf(value: unknown): string {
@@ -104,10 +113,13 @@ export function getJsonKeys(input: string): string[] | null {
 export interface JsonToCsvOptions {
   /** 只导出指定列（按给出顺序）；缺省导出全部列 */
   includeKeys?: string[];
+  /** 输出分隔符，缺省逗号 */
+  delimiter?: Delimiter;
 }
 
 /** JSON（对象数组）→ CSV；键按首次出现顺序合并，可用 includeKeys 选择/排序列 */
 export function jsonToCsv(input: string, options: JsonToCsvOptions = {}): string {
+  const delimiter = options.delimiter ?? ',';
   const records = collectRecords(input);
   const allKeys: string[] = [];
   for (const record of records) {
@@ -120,9 +132,9 @@ export function jsonToCsv(input: string, options: JsonToCsvOptions = {}): string
       ? allKeys
       : options.includeKeys.filter((key) => allKeys.includes(key));
   if (keys.length === 0) throw new Error('请至少选择一列');
-  const lines = [keys.map((key) => escapeCell(key)).join(',')];
+  const lines = [keys.map((key) => escapeCell(key, delimiter)).join(delimiter)];
   for (const record of records) {
-    lines.push(keys.map((key) => escapeCell(cellOf(record[key]))).join(','));
+    lines.push(keys.map((key) => escapeCell(cellOf(record[key]), delimiter)).join(delimiter));
   }
   return lines.join('\n');
 }
@@ -133,17 +145,19 @@ export interface CsvToJsonOptions {
   convertNumbers?: boolean;
   /** 按列位置重命名表头；缺省的位置沿用原表头 */
   headerNames?: Record<number, string>;
+  /** 输入分隔符，缺省逗号 */
+  delimiter?: Delimiter;
 }
 
 /** 提取 CSV 表头；输入为空时返回 null，供 UI 实时提示 */
-export function getCsvHeader(input: string): string[] | null {
-  const rows = parseCsv(input);
+export function getCsvHeader(input: string, delimiter: Delimiter = ','): string[] | null {
+  const rows = parseCsv(input, delimiter);
   return rows.length > 0 ? rows[0] : null;
 }
 
 /** CSV → JSON（对象数组，2 空格缩进） */
 export function csvToJson(input: string, options: CsvToJsonOptions = {}): string {
-  const rows = parseCsv(input);
+  const rows = parseCsv(input, options.delimiter ?? ',');
   if (rows.length === 0) throw new Error('CSV 内容为空');
   const [header, ...body] = rows;
   if (header.every((cell) => cell === '')) throw new Error('CSV 表头为空');

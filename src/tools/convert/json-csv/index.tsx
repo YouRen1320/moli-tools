@@ -1,7 +1,14 @@
 import { useState } from 'react';
 import ToolShell from '@components/ToolShell';
 import CopyButton from '@components/CopyButton';
-import { csvToJson, getCsvHeader, getJsonKeys, jsonToCsv } from './service';
+import {
+  csvToJson,
+  getCsvHeader,
+  getJsonKeys,
+  jsonToCsv,
+  DELIMITERS,
+  type Delimiter,
+} from './service';
 import { downloadBlob } from '@lib/download';
 import { formatFileStamp } from '@lib/format';
 
@@ -23,21 +30,22 @@ export default function JsonCsv() {
   // CSV→JSON 的表头重命名：按列位置记录新名
   const [headerNames, setHeaderNames] = useState<Record<number, string>>({});
   const [committedInput, setCommittedInput] = useState<string | null>(null);
+  const [delimiter, setDelimiter] = useState<Delimiter>(',');
 
   // 全部渲染期派生，无副作用。超大输入退出实时模式：
   // live = 派生自当前输入；非 live = 派生自最近一次"转换"确认的内容
   const isLive = input.length <= LIVE_LIMIT;
   const source = isLive ? input : (committedInput ?? '');
   const jsonKeys = direction === 'json2csv' ? getJsonKeys(source) : null;
-  const csvHeader = direction === 'csv2json' ? getCsvHeader(source) : null;
+  const csvHeader = direction === 'csv2json' ? getCsvHeader(source, delimiter) : null;
 
   let output = '';
   let error: string | null = null;
   try {
     output =
       direction === 'json2csv'
-        ? jsonToCsv(source, { includeKeys: includeKeys ?? undefined })
-        : csvToJson(source, { convertNumbers, headerNames });
+        ? jsonToCsv(source, { includeKeys: includeKeys ?? undefined, delimiter })
+        : csvToJson(source, { convertNumbers, headerNames, delimiter });
   } catch (cause) {
     error = cause instanceof Error ? cause.message : '转换失败';
   }
@@ -108,6 +116,24 @@ export default function JsonCsv() {
               纯数字转数值
             </label>
           )}
+          <label
+            className="ml-auto flex items-center gap-2 text-sm text-neutral-700"
+            htmlFor="delimiter-select"
+          >
+            分隔符
+            <select
+              id="delimiter-select"
+              className="rounded-lg border border-neutral-300 bg-white/70 px-2 py-1.5 text-sm"
+              value={delimiter}
+              onChange={(event) => setDelimiter(event.target.value as Delimiter)}
+            >
+              {DELIMITERS.map((item) => (
+                <option key={item.value} value={item.value}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
 
         {/* JSON→CSV：列选择 */}
@@ -197,16 +223,11 @@ export default function JsonCsv() {
           </div>
         )}
 
-        <div className="flex gap-2">
-          <button type="button" className="btn-secondary" onClick={switchDirection}>
-            切换方向（用结果继续）
+        {input !== '' && (
+          <button type="button" className="btn-secondary" onClick={() => handleTextChange('')}>
+            清空
           </button>
-          {input !== '' && (
-            <button type="button" className="btn-secondary" onClick={() => handleTextChange('')}>
-              清空
-            </button>
-          )}
-        </div>
+        )}
 
         {error && <p className="error-text">{error}</p>}
 

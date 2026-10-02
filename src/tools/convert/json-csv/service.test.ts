@@ -1,5 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { csvToJson, getJsonKeys, getCsvHeader, jsonToCsv, parseCsv } from './service';
+import {
+  csvToJson,
+  getJsonKeys,
+  getCsvHeader,
+  jsonToCsv,
+  parseCsv,
+  type Delimiter,
+} from './service';
 
 describe('parseCsv', () => {
   it('解析引号内的逗号与换行', () => {
@@ -103,5 +110,45 @@ describe('列选择与表头重命名（v1.1.0）', () => {
     const json = csvToJson('a,b\n1,2', { headerNames: { 0: '列一' }, convertNumbers: true });
     expect(json).toContain('"列一": 1');
     expect(json).toContain('"b": 2');
+  });
+});
+
+describe('分隔符选项（v1.9.0）', () => {
+  it('parseCsv 支持分号与 Tab', () => {
+    expect(parseCsv('a;b\nc;d', ';')).toEqual([
+      ['a', 'b'],
+      ['c', 'd'],
+    ]);
+    expect(parseCsv('a\tb\nc\td', '\t')).toEqual([
+      ['a', 'b'],
+      ['c', 'd'],
+    ]);
+  });
+
+  it('jsonToCsv 分号输出且含分号的单元格加引号', () => {
+    expect(jsonToCsv('[{"a":1,"b":"x;y"}]', { delimiter: ';' })).toBe('a;b\n1;"x;y"');
+  });
+
+  it('jsonToCsv Tab 输出且含 Tab 的单元格加引号', () => {
+    const jsonInput = JSON.stringify([{ t: 'a\tb' }]);
+    expect(jsonToCsv(jsonInput, { delimiter: '\t' })).toBe('t\n"a\tb"');
+  });
+
+  it('csvToJson 分号解析', () => {
+    expect(csvToJson('a;b\n1;2', { delimiter: ';' })).toBe(
+      '[\n  {\n    "a": "1",\n    "b": "2"\n  }\n]',
+    );
+  });
+
+  it('分号往返一致', () => {
+    const original = 'name;text\n茉莉;"含;分号"\nMoli;plain';
+    const json = csvToJson(original, { delimiter: ';' });
+    expect(jsonToCsv(json, { delimiter: ';' })).toBe(original);
+  });
+
+  it('缺省仍是逗号', () => {
+    expect(jsonToCsv('[{"a":1}]')).toBe('a\n1');
+    const d: Delimiter | undefined = undefined;
+    expect(parseCsv('a,b', d)).toEqual([['a', 'b']]);
   });
 });
