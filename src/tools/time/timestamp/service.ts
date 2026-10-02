@@ -18,14 +18,7 @@ export function dateToUnix(dateTimeLocal: string, unit: TimeUnit): string {
   return unit === 's' ? String(Math.floor(ms / 1000)) : String(ms);
 }
 
-/** 本地时区固定格式：YYYY-MM-DD HH:mm:ss */
-export function formatDateTime(date: Date): string {
-  const pad = (n: number) => String(n).padStart(2, '0');
-  return (
-    `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ` +
-    `${pad(date.getHours())}:${pad(date.getMinutes())}:${pad(date.getSeconds())}`
-  );
-}
+export { formatDateTime } from '@lib/format';
 
 export function nowInputValue(): string {
   const now = new Date();
