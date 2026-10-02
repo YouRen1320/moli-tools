@@ -1,6 +1,7 @@
 # YouRen工具箱（youren-tools）
 
 [![CI](https://github.com/YouRen1320/youren-tools/actions/workflows/ci.yml/badge.svg)](https://github.com/YouRen1320/youren-tools/actions/workflows/ci.yml)
+[![tests](https://img.shields.io/endpoint?url=https://raw.githubusercontent.com/YouRen1320/youren-tools/main/docs/badges/tests.json)](https://github.com/YouRen1320/youren-tools/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](./LICENSE)
 [![Live](https://img.shields.io/badge/online-youren1320.github.io-8a63e8)](https://youren1320.github.io/youren-tools/)
 
@@ -10,7 +11,7 @@
 
 ## 已实现 / 未实现
 
-### ✅ 已实现（v1.11.0）
+### ✅ 已实现（v1.13.0）
 
 | 分类 | 工具          | 说明                                                     |
 | ---- | ------------- | -------------------------------------------------------- |

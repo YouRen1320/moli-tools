@@ -171,3 +171,12 @@ export function removeFromHistory(
   }
   return history;
 }
+
+/** 历史条目的字符集摘要：如「小写+大写+数字」 */
+export function optionsSummary(options: PasswordOptions): string {
+  const parts = ['小写'];
+  if (options.uppercase) parts.push('大写');
+  if (options.digits) parts.push('数字');
+  if (options.symbols) parts.push('符号');
+  return parts.join('+');
+}
