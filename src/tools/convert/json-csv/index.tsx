@@ -10,6 +10,9 @@ const SAMPLE_JSON =
   '[\n  { "name": "茉莉", "age": 3, "city": "杭州" },\n  { "name": "Moli", "age": 4, "city": "Amsterdam" }\n]';
 const SAMPLE_CSV = 'name,age,city\n茉莉,3,杭州\nMoli,4,Amsterdam';
 
+/** 超过该长度的输入关闭实时转换（避免大文本渲染期反复解析造成卡顿） */
+const LIVE_LIMIT = 256 * 1024;
+
 export default function JsonCsv() {
   const [direction, setDirection] = useState<Direction>('json2csv');
   const [input, setInput] = useState(SAMPLE_JSON);
@@ -18,18 +21,22 @@ export default function JsonCsv() {
   const [includeKeys, setIncludeKeys] = useState<string[] | null>(null);
   // CSV→JSON 的表头重命名：按列位置记录新名
   const [headerNames, setHeaderNames] = useState<Record<number, string>>({});
+  const [committedInput, setCommittedInput] = useState<string | null>(null);
 
-  // 全部渲染期派生，无副作用
-  const jsonKeys = direction === 'json2csv' ? getJsonKeys(input) : null;
-  const csvHeader = direction === 'csv2json' ? getCsvHeader(input) : null;
+  // 全部渲染期派生，无副作用。超大输入退出实时模式：
+  // live = 派生自当前输入；非 live = 派生自最近一次"转换"确认的内容
+  const isLive = input.length <= LIVE_LIMIT;
+  const source = isLive ? input : (committedInput ?? '');
+  const jsonKeys = direction === 'json2csv' ? getJsonKeys(source) : null;
+  const csvHeader = direction === 'csv2json' ? getCsvHeader(source) : null;
 
   let output = '';
   let error: string | null = null;
   try {
     output =
       direction === 'json2csv'
-        ? jsonToCsv(input, { includeKeys: includeKeys ?? undefined })
-        : csvToJson(input, { convertNumbers, headerNames });
+        ? jsonToCsv(source, { includeKeys: includeKeys ?? undefined })
+        : csvToJson(source, { convertNumbers, headerNames });
   } catch (cause) {
     error = cause instanceof Error ? cause.message : '转换失败';
   }
@@ -41,12 +48,15 @@ export default function JsonCsv() {
     setHeaderNames({});
   };
 
+  const commit = () => setCommittedInput(input);
+
   const switchDirection = () => {
     const next: Direction = direction === 'json2csv' ? 'csv2json' : 'json2csv';
     setDirection(next);
     setInput(output || (next === 'csv2json' ? SAMPLE_CSV : SAMPLE_JSON));
     setIncludeKeys(null);
     setHeaderNames({});
+    setCommittedInput(null);
   };
 
   const toggleKey = (key: string) => {
@@ -173,6 +183,29 @@ export default function JsonCsv() {
           value={input}
           onChange={(event) => handleTextChange(event.target.value)}
         />
+
+        {!isLive && (
+          <div className="space-y-2">
+            <p className="rounded-lg border border-amber-300/70 bg-amber-100/70 px-3 py-2 text-xs leading-relaxed text-amber-900">
+              输入超过 256 KB，已切换为手动转换模式。
+              {input !== committedInput && ' 输入有更新，点击下方按钮重新转换。'}
+            </p>
+            <button type="button" className="btn-primary" onClick={commit}>
+              转换
+            </button>
+          </div>
+        )}
+
+        <div className="flex gap-2">
+          <button type="button" className="btn-secondary" onClick={switchDirection}>
+            切换方向（用结果继续）
+          </button>
+          {input !== '' && (
+            <button type="button" className="btn-secondary" onClick={() => handleTextChange('')}>
+              清空
+            </button>
+          )}
+        </div>
 
         {error && <p className="error-text">{error}</p>}
 
