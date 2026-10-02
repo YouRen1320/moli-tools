@@ -35,3 +35,5 @@ jobs:
         run: pnpm test
       - name: 构建
         run: pnpm build
+      - name: 无障碍巡检
+        run: pnpm audit:a11y
