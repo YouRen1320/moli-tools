@@ -23,5 +23,5 @@ const badge = {
 };
 
 await mkdir(dirname(outPath), { recursive: true });
-await writeFile(outPath, `${JSON.stringify(badge)}\n`);
+await writeFile(outPath, `${JSON.stringify(badge, null, 2)}\n`);
 console.log(`已生成 ${outPath}（${passed}/${total} passing，${color}）`);

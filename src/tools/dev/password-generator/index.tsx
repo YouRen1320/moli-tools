@@ -109,6 +109,12 @@ export default function PasswordGenerator() {
           生成密码
         </button>
 
+        {history.length === 0 && (
+          <p className="text-xs leading-relaxed text-neutral-600">
+            生成的密码会暂存在本机浏览器，方便随时复制；可随时一键清空。
+          </p>
+        )}
+
         {error && <p className="error-text">{error}</p>}
 
         {password !== '' && (
