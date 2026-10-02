@@ -173,17 +173,26 @@ export default function PdfToImage() {
 
         {source && (
           <>
-            <label className="block text-sm text-neutral-700" htmlFor="pdf-image-pages">
-              页码（1 起始，支持逗号与连字符，例如 1,3-5）
-            </label>
-            <input
-              id="pdf-image-pages"
-              type="text"
-              className="text-input"
-              placeholder={`1-${Math.min(source.pageCount, 3)}`}
-              value={pagesInput}
-              onChange={(event) => setPagesInput(event.target.value)}
-            />
+            <div className="flex items-end gap-2">
+              <label className="block text-sm text-neutral-700" htmlFor="pdf-image-pages">
+                页码（1 起始，支持逗号与连字符，例如 1,3-5）
+                <input
+                  id="pdf-image-pages"
+                  type="text"
+                  className="text-input mt-1"
+                  placeholder={`1-${Math.min(source.pageCount, 3)}`}
+                  value={pagesInput}
+                  onChange={(event) => setPagesInput(event.target.value)}
+                />
+              </label>
+              <button
+                type="button"
+                className="btn-secondary shrink-0"
+                onClick={() => setPagesInput(`1-${source.pageCount}`)}
+              >
+                全部页
+              </button>
+            </div>
             <button type="button" className="btn-primary" onClick={convert} disabled={busy}>
               {busy ? '渲染中…' : `转换为 ${format.toUpperCase()} 并下载`}
             </button>
