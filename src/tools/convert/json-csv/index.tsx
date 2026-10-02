@@ -3,6 +3,7 @@ import ToolShell from '@components/ToolShell';
 import CopyButton from '@components/CopyButton';
 import { csvToJson, getCsvHeader, getJsonKeys, jsonToCsv } from './service';
 import { downloadBlob } from '@lib/download';
+import { formatFileStamp } from '@lib/format';
 
 type Direction = 'json2csv' | 'csv2json';
 
@@ -225,7 +226,7 @@ export default function JsonCsv() {
                       new Blob([output], {
                         type: direction === 'json2csv' ? 'text/csv' : 'application/json',
                       }),
-                      direction === 'json2csv' ? 'export.csv' : 'export.json',
+                      `export-${formatFileStamp()}.${direction === 'json2csv' ? 'csv' : 'json'}`,
                     )
                   }
                 >

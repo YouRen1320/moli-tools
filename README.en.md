@@ -13,18 +13,33 @@ A small, fast Chinese-first online toolbox. **Everything runs locally in your br
 
 **https://youren1320.github.io/youren-tools/**
 
-## Implemented (v1.5.0)
+## Implemented (v1.8.0)
 
-- **PDF**: merge, extract pages, convert pages to PNG/JPG (multi-page zip), watermark (tiled image or diagonal text)
-- **Image**: compress / convert to WebP / JPEG / PNG
-- **Text**: Base64, JSON formatter, word counter (CJK-aware), URL codec, Markdown preview (sanitized), text diff, text cleaner (dedupe / sort / trim)
-- **Time**: Unix timestamp converter
-- **Generate**: QR code generator
-- **Design**: color converter (HEX / RGB / HSL), WCAG contrast checker
-- **Convert**: unit converter (metric & Chinese units: 里/尺/寸/斤/两), JSON ↔ CSV (RFC 4180, round-trip safe)
-- **Dev**: hash calculator (SHA-1/256/384/512 via WebCrypto), password generator (entropy-rated), UUID generator
+| Category | Tool                | Description                                                  |
+| -------- | ------------------- | ------------------------------------------------------------ |
+| PDF      | PDF Merge           | Merge multiple PDFs in order, reorderable                    |
+| PDF      | PDF Extract Pages   | Export selected pages (e.g. `1,3-5`) to a new file           |
+| PDF      | PDF to Image        | Render pages to PNG/JPG (adjustable quality), multi-page zip |
+| PDF      | PDF Watermark       | Tiled image or diagonal text watermark on every page         |
+| Image    | Image Compress      | Re-encode to WebP/JPEG/PNG with quality control              |
+| Text     | Base64              | UTF-8 safe encode/decode, emoji-friendly                     |
+| Text     | JSON Formatter      | Format / minify / validate with error positions              |
+| Text     | Word Counter        | CJK-aware word/character/line/paragraph stats, live          |
+| Text     | URL Codec           | Percent-encoding for URL components and full URLs            |
+| Text     | Markdown Preview    | Live preview with XSS-sanitized HTML output                  |
+| Text     | Text Diff           | Line-level diff with add/remove highlighting                 |
+| Text     | Text Cleaner        | Dedupe / sort / drop empty lines / trim, live                |
+| Time     | Timestamp Converter | Unix seconds/milliseconds ↔ datetime                         |
+| Generate | QR Code Generator   | Text or URL → PNG, adjustable size & ECC                     |
+| Design   | Color Converter     | HEX/RGB/HSL conversion with live preview                     |
+| Design   | Contrast Checker    | WCAG ratio with AA/AAA verdicts                              |
+| Convert  | Unit Converter      | Length/weight/temperature incl. Chinese units (里/斤/两)     |
+| Convert  | JSON ↔ CSV          | RFC 4180 round-trip-safe conversion                          |
+| Dev      | Hash Calculator     | SHA-1/256/384/512 for text & files (WebCrypto)               |
+| Dev      | Password Generator  | Crypto-grade randomness with entropy rating                  |
+| Dev      | UUID Generator      | Batch v4 UUID generation, one-click copy                     |
 
-Also included: tool registry (zero route changes to add a tool), service & component tests (110 cases), ESLint + Prettier, type checking, GitHub Actions CI (SHA-pinned actions), Dependabot, PWA (installable & offline), day/night themes, automatic deployment to GitHub Pages, sitemap + robots.txt, WCAG AA readability (glass panels audited with our own contrast tool).
+Also included: tool registry (zero route changes to add a tool), service & component tests (126 cases), ESLint + Prettier, type checking, GitHub Actions CI (SHA-pinned actions), Dependabot, PWA (installable & offline), day/night themes, OG share card, automatic deployment to GitHub Pages, sitemap + robots.txt, WCAG AA readability.
 
 ## Not implemented (roadmap)
 

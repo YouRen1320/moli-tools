@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import ToolShell from '@components/ToolShell';
+import { formatDateTime } from '@lib/format';
 import CopyButton from '@components/CopyButton';
 import {
   clearHistory,
@@ -139,8 +140,7 @@ export default function PasswordGenerator() {
                   <span className="min-w-0 flex-1">
                     <code className="block truncate text-sm">{entry.password}</code>
                     <span className="text-xs text-neutral-500">
-                      {new Date(entry.time).toLocaleTimeString('zh-CN', { hour12: false })} ·{' '}
-                      {entry.password.length} 位
+                      {formatDateTime(new Date(entry.time))} · {entry.password.length} 位
                     </span>
                   </span>
                   <span className="flex shrink-0 gap-1">
